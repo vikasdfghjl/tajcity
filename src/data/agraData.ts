@@ -66,7 +66,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "0 km (Ground Zero)",
     bestTime: "Sunrise (5:45 AM - 7:30 AM) for golden glow and thinnest crowds",
     insiderTip:
-      "Always enter via the East Gate (VIP/Pre-booked) — it moves 3x faster than the crowded West Gate. Do not bring tripods, power banks, tobacco, or books inside.",
+      "Always enter via the East Gate (VIP/Pre-booked); it moves 3x faster than the crowded West Gate. Do not bring tripods, power banks, tobacco, or books inside.",
     mustTryOrSee: [
       "The Central Pool Reflection at dawn",
       "Pietra Dura semi-precious floral inlays on marble walls",
@@ -127,7 +127,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "38 km (1 hour drive)",
     bestTime: "Morning (8:30 AM - 12:00 PM) before the desert sun gets intense",
     insiderTip:
-      "Tie a red sacred thread at the jali screen of Salim Chishti's Dargah — centuries of emperors and travelers have made wishes here. Beware of unlicensed aggressive guides outside Buland Darwaza.",
+      "Tie a red sacred thread at the jali screen of Salim Chishti's Dargah. Centuries of emperors and travelers have made wishes here. Beware of unlicensed aggressive guides outside Buland Darwaza.",
     mustTryOrSee: [
       "Buland Darwaza (54m high 'Door of Victory')",
       "White marble tomb of Salim Chishti",
@@ -215,7 +215,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "14 km (25 mins drive)",
     bestTime: "Early morning or late afternoon",
     insiderTip:
-      "Look at the Southern Gate (Buland Gate of Sikandra) — its calligraphic inscriptions and tile-work rival the finest monuments in Central Asia.",
+      "Look at the Southern Gate (Buland Gate of Sikandra): its calligraphic inscriptions and tile-work rival the finest monuments in Central Asia.",
     mustTryOrSee: [
       "Southern Grand Gateway with 4 marble minarets",
       "Spotted deer and peacocks roaming the gardens",
@@ -294,7 +294,7 @@ export const FOOD_DATA: PlaceItem[] = [
     priceRange: "₹₹₹ - Fine Dining (₹800 - ₹1,500 per person)",
     location: "Fatehabad Road, Tajganj, Agra",
     distanceFromTaj: "2.1 km",
-    bestTime: "Dinner (8:00 PM - 10:30 PM) — Book 1-2 hours in advance during peak season",
+    bestTime: "Dinner (8:00 PM - 10:30 PM). Book 1-2 hours in advance during peak season",
     insiderTip:
       "Their signature 'Chicken Tikka Lababdar' and 'Dal Pinch of Spice' (slow-cooked black lentils simmered for 24 hours with butter and cream) are unmatched anywhere in western UP.",
     mustTryOrSee: [
@@ -365,7 +365,7 @@ export const FOOD_DATA: PlaceItem[] = [
     reviewCount: 41000,
     tagline: "Sensory explosion of Agra Bhalla, crispy Golgappe & Dahi Gujiya",
     description:
-      "A vibrant culinary alley inside Sadar Bazaar packed with legendary chaat-walas. Agra is famous for its 'Bhalla' — unlike Delhi's aloo tikki, Agra's Bhalla is double-fried in pure desi ghee until shatteringly crisp, then drowned in spiced sweet dahi, zesty mint, and sonth chutney.",
+      "A vibrant culinary alley inside Sadar Bazaar packed with legendary chaat-walas. Agra is famous for its 'Bhalla'. Unlike Delhi's aloo tikki, Agra's Bhalla is double-fried in pure desi ghee until shatteringly crisp, then drowned in spiced sweet dahi, zesty mint, and sonth chutney.",
     timings: "4:00 PM - 10:30 PM",
     priceRange: "₹ - Street Food (₹50 - ₹120 per plate)",
     location: "Chaat Gali, Sadar Bazaar, Agra",

@@ -1,51 +1,61 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Outfit } from "next/font/google";
+import { Geist, Geist_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Providers } from "@/components/Providers";
 import "./globals.css";
 
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
+const geist = Geist({ variable: "--font-geist", subsets: ["latin"], display: "swap" });
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800", "900"],
   display: "swap",
 });
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
+const tiro = Tiro_Devanagari_Hindi({
+  variable: "--font-tiro",
+  subsets: ["devanagari"],
+  weight: "400",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Taj City | Interactive Agra Visitor & Heritage Food Guide",
+  title: "Taj City | Agra, timed right",
   description:
-    "Your ultimate interactive companion to visiting Agra, India. Discover the Taj Mahal sunrise secrets, Agra Fort, authentic Bedmi Poori, legendary Panchhi Petha, custom day itineraries, and insider tips.",
+    "A mobile-first companion for Agra: live Taj Mahal opening status, sunrise and crowd timing, where to eat, a map of every stop and a day plan you can reorder and share.",
   keywords: [
-    "Agra Travel Guide",
-    "Taj Mahal Visiting Tips",
-    "Agra Street Food",
-    "Best Petha in Agra",
-    "Deviram Bedmi Puri",
-    "Agra Fort",
-    "Mehtab Bagh Sunset",
-    "Fatehpur Sikri Day Trip",
-    "Agra Itinerary 1 Day 2 Day",
+    "Agra travel guide",
+    "Taj Mahal timings today",
+    "Taj Mahal sunrise",
+    "Agra street food",
+    "Panchhi Petha",
+    "Agra itinerary",
   ],
-  authors: [{ name: "Taj City Interactive Guide" }],
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f2f3ef" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0e15" },
+  ],
 };
+
+// Runs before first paint so a stored or system dark theme never flashes light
+const themeScript = `(function(){try{var t=localStorage.getItem("tajcity-theme");if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="light" className={`${cinzel.variable} ${outfit.variable}`}>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${geistMono.variable} ${tiro.variable}`}
+    >
       <head>
-        <link rel="icon" href="/favicon.ico" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

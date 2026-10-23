@@ -1,54 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Taj City
 
-## Getting Started
+A mobile-first visitor companion for Agra, built with Next.js 16, React 19, Tailwind CSS v4 and Motion.
+It answers the questions visitors actually have on the day: is the Taj open right now, when is the
+light best, where should I eat, how far is everything, and what's my plan.
 
-First, run the development server:
+## What it does
+
+- **Live Taj status.** Opening and closing times are calculated from today's sunrise and sunset in
+  Agra (gates open 30 minutes before sunrise and close 30 minutes before sunset), shown in IST
+  whatever the visitor's own time zone. Fridays are handled, and the next full-moon night-viewing
+  window is computed from the lunar phase.
+- **Light dial.** Drag through the day and a real photo of the Taj is colour-graded to that hour.
+  Phase boundaries follow today's actual sunrise and sunset. A crowd curve (a labelled estimate)
+  and advice on gates and timing update as you drag.
+- **Explore.** Monuments, food institutions and craft stops with live search. A swipe rail on
+  phones, an asymmetric grid on desktop. Every place opens a detail sheet with hours, fees, the
+  local tip and directions.
+- **Map.** MapLibre with OpenFreeMap tiles (free, no key), lazy-loaded on approach, themed for
+  light and dark, with numbered pins synced to a distance-ordered list.
+- **My day.** Save stops from anywhere, drag to reorder, open the whole route in Google Maps in
+  order, share it, and undo removals. Saved on the device.
+- **Ready-made days.** Three routed itineraries you can load into your plan in one tap.
+
+## Design decisions
+
+- **Palette:** cool "Makrana marble" neutrals with a single lapis-lazuli accent, taken from the
+  Taj's pietra dura inlay. Every text pairing passes WCAG AA in both themes.
+- **Type:** Geist for UI, Geist Mono for times and distances, Tiro Devanagari Hindi for place
+  names in Hindi.
+- **Mobile first:** a floating tab bar in the thumb zone, bottom sheets that become side panels
+  from `lg`, touch targets of 40px or more, `svh` units and safe-area insets.
+- **Motion with a job:** entrance choreography in the hero, shared-layout pills, sheet physics and
+  the dial's spring. Everything respects `prefers-reduced-motion`.
+- **Honest content:** photos are openly licensed from Wikimedia Commons and credited in each
+  sheet and in the footer. Dish photos are captioned as dishes, and estimates are labelled as
+  estimates.
+
+## Architecture
+
+```
+src/
+  app/            layout (fonts, no-flash theme script), page, design tokens
+  components/     one folder per section, plus ui/ primitives and sheets/
+  data/           place content, coordinates and photo metadata, light-dial model
+  lib/            agra-time.ts (sun and moon maths in IST), stores.ts (external stores)
+```
+
+Shared client state (clock, theme, plan, open sheet, toasts) lives in small
+`useSyncExternalStore` stores rather than context, so server-rendered sections stay server
+components and nothing touches the clock or `localStorage` during prerender. The page builds to
+fully static HTML.
+
+## Run it
+
+```bash
+npm install
+```
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Linting & Formatting
-
-This project uses [Oxlint](https://oxc.rs/docs/guide/usage/linter) and [Oxfmt](https://oxc.rs/docs/guide/usage/formatter) from the Oxc toolchain for ultra-fast linting and formatting:
+Lint, format and build:
 
 ```bash
-# Lint code
-npm run lint
-
-# Auto-fix lint issues
-npm run lint:fix
-
-# Format code
-npm run format
-
-# Check formatting
-npm run format:check
+npm run lint && npm run format:check && npm run build
 ```
 
-## Learn More
+## Credits
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Photos from Wikimedia Commons under their stated licences (listed in the site footer). Map data
+© OpenStreetMap contributors, tiles by OpenFreeMap. Sun and moon calculations by SunCalc.
