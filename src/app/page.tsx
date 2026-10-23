@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useSyncExternalStore } from "react";
+import { MotionConfig } from "motion/react";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { TajSimulator } from "@/components/TajSimulator";
@@ -94,89 +95,98 @@ export default function Home() {
     }
   };
 
+  const handleClearSearch = () => {
+    setSearchQuery("");
+  };
+
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "var(--bg-canvas)",
-      }}
-    >
-      <Header
-        savedItemCount={savedPlaces.length}
-        currentTheme={currentTheme}
-        onToggleTheme={handleToggleTheme}
-        onOpenItineraryDrawer={handleOpenDrawer}
-      />
-
-      <main style={{ flex: 1 }}>
-        <Hero
-          onSearchQueryChange={setSearchQuery}
-          onSelectQuickCategory={handleSelectQuickCategory}
+    <MotionConfig reducedMotion="user">
+      <div
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "var(--bg-canvas)",
+        }}
+      >
+        <Header
+          savedItemCount={savedPlaces.length}
+          currentTheme={currentTheme}
+          onToggleTheme={handleToggleTheme}
+          onOpenItineraryDrawer={handleOpenDrawer}
         />
 
-        <TajSimulator />
+        <main style={{ flex: 1 }}>
+          <Hero
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+            onSelectQuickCategory={handleSelectQuickCategory}
+          />
 
-        <PlacesExplorer
-          searchQuery={searchQuery}
-          savedItemIds={savedItemIds}
-          onToggleSaveItem={handleToggleSaveItem}
-        />
+          <TajSimulator />
 
-        <FoodExplorer
-          searchQuery={searchQuery}
-          savedItemIds={savedItemIds}
-          onToggleSaveItem={handleToggleSaveItem}
-        />
+          <PlacesExplorer
+            searchQuery={searchQuery}
+            savedItemIds={savedItemIds}
+            onToggleSaveItem={handleToggleSaveItem}
+            onClearSearch={handleClearSearch}
+          />
 
-        <ArtisanCrafts />
+          <FoodExplorer
+            searchQuery={searchQuery}
+            savedItemIds={savedItemIds}
+            onToggleSaveItem={handleToggleSaveItem}
+            onClearSearch={handleClearSearch}
+          />
 
-        <ItineraryBuilder
-          savedItems={savedPlaces}
-          isDrawerOpen={isDrawerOpen}
-          onCloseDrawer={handleCloseDrawer}
-          onRemoveItem={handleRemoveItem}
-          onApplyPreset={handleApplyPreset}
-          onClearItems={handleClearItems}
-        />
+          <ArtisanCrafts />
 
-        <TipsAndFAQ />
-      </main>
+          <ItineraryBuilder
+            savedItems={savedPlaces}
+            isDrawerOpen={isDrawerOpen}
+            onCloseDrawer={handleCloseDrawer}
+            onRemoveItem={handleRemoveItem}
+            onApplyPreset={handleApplyPreset}
+            onClearItems={handleClearItems}
+          />
 
-      <Footer />
+          <TipsAndFAQ />
+        </main>
 
-      {/* Mobile Bottom Navigation Bar (Visible only on mobile screens) */}
-      <nav className="mobile-bottom-nav" aria-label="Mobile quick navigation">
-        <a href="#monuments" className="mobile-nav-item">
-          <span className="icon">🏛️</span>
-          <span>Monuments</span>
-        </a>
-        <a href="#food" className="mobile-nav-item">
-          <span className="icon">🍲</span>
-          <span>Food</span>
-        </a>
-        <a href="#simulator" className="mobile-nav-item">
-          <span className="icon">☀️</span>
-          <span>Light</span>
-        </a>
-        <button type="button" onClick={handleOpenDrawer} className="mobile-nav-item">
-          <span className="icon">🧭</span>
-          <span>Plan ({savedPlaces.length})</span>
-        </button>
-        <button
-          type="button"
-          onClick={handleToggleTheme}
-          className="mobile-nav-item"
-          aria-label="Toggle Theme"
-          suppressHydrationWarning
-        >
-          <span className="icon" suppressHydrationWarning>
-            {currentTheme === "light" ? "🌙" : "☀️"}
-          </span>
-          <span suppressHydrationWarning>{currentTheme === "light" ? "Dark" : "Light"}</span>
-        </button>
-      </nav>
-    </div>
+        <Footer />
+
+        {/* Mobile Bottom Navigation Bar (Visible only on mobile screens) */}
+        <nav className="mobile-bottom-nav" aria-label="Mobile quick navigation">
+          <a href="#monuments" className="mobile-nav-item">
+            <span className="icon">🏛️</span>
+            <span>Monuments</span>
+          </a>
+          <a href="#food" className="mobile-nav-item">
+            <span className="icon">🍲</span>
+            <span>Food</span>
+          </a>
+          <a href="#simulator" className="mobile-nav-item">
+            <span className="icon">☀️</span>
+            <span>Light</span>
+          </a>
+          <button type="button" onClick={handleOpenDrawer} className="mobile-nav-item">
+            <span className="icon">🧭</span>
+            <span>Plan ({savedPlaces.length})</span>
+          </button>
+          <button
+            type="button"
+            onClick={handleToggleTheme}
+            className="mobile-nav-item"
+            aria-label="Toggle Theme"
+            suppressHydrationWarning
+          >
+            <span className="icon" suppressHydrationWarning>
+              {currentTheme === "light" ? "🌙" : "☀️"}
+            </span>
+            <span suppressHydrationWarning>{currentTheme === "light" ? "Dark" : "Light"}</span>
+          </button>
+        </nav>
+      </div>
+    </MotionConfig>
   );
 }

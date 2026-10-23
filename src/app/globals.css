@@ -14,18 +14,21 @@
 
   --text-primary: #151a24;
   --text-secondary: #475467;
-  --text-muted: #667085;
+  --text-muted: #5f6878;
   --text-dim: #98a2b3;
+
+  /* Text placed on a solid sandstone/brass fill (selected pills, step numbers) */
+  --text-on-accent: #ffffff;
 
   --color-sandstone: #b84b29;
   --color-sandstone-light: #c85a32;
   --color-sandstone-soft: #fcf1eb;
 
-  --color-brass: #9e6f21;
+  --color-brass: #8a5f17;
   --color-brass-light: #b47a2b;
   --color-brass-soft: #fbf5e9;
 
-  --color-emerald: #15803d;
+  --color-emerald: #147a3a;
   --color-emerald-soft: #f0fdf4;
   --color-ruby: #be123c;
   --color-ruby-soft: #fff1f2;
@@ -66,6 +69,8 @@
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --text-dim: #64748b;
+
+  --text-on-accent: #090d16;
 
   --color-sandstone: #e06d4a;
   --color-sandstone-light: #f08361;
@@ -167,6 +172,26 @@ button {
   background: none;
   font-family: inherit;
   touch-action: manipulation;
+}
+
+/* Keyboard focus ring (mouse clicks don't trigger :focus-visible on buttons) */
+:focus-visible {
+  outline: 2px solid var(--color-sandstone);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Layout Utilities */
@@ -361,8 +386,8 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);
@@ -399,6 +424,23 @@ button {
     flex-wrap: wrap;
     overflow-x: visible;
   }
+}
+
+/* Centre chips on mobile when they fit; auto margins (unlike justify-content: center)
+   keep the first chip reachable when the row overflows and scrolls. */
+@media (max-width: 767px) {
+  .chips-centered > :first-child {
+    margin-left: auto;
+  }
+
+  .chips-centered > :last-child {
+    margin-right: auto;
+  }
+}
+
+.hero-search-field:focus-within {
+  outline: 2px solid var(--color-sandstone);
+  outline-offset: 2px;
 }
 
 /* Mobile Bottom Navigation Bar */
@@ -584,7 +626,7 @@ button {
 
 .header-plan-btn {
   padding: 0.4rem 0.85rem;
-  min-height: 36px;
+  min-height: 40px;
   font-size: 0.82rem;
   display: inline-flex;
   align-items: center;
@@ -708,8 +750,8 @@ button {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   background: var(--bg-elevated);
   border: 1px solid var(--border-subtle);

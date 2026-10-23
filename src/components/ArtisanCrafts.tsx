@@ -130,7 +130,7 @@ export function ArtisanCrafts() {
                   lineHeight: 1.5,
                 }}
               >
-                Rogue souvenir shops often coat soft, cheap soapstone (alabaster or gorara) with
+                Rogue souvenir shops often give soft, cheap soapstone (gorara) or alabaster a
                 synthetic polish and claim it is authentic Makrana marble. Here is how to test it
                 yourself:
               </p>
@@ -153,12 +153,13 @@ export function ArtisanCrafts() {
                   marginBottom: "0.25rem",
                 }}
               >
-                1. The Coin / Key Scratch Test
+                1. The Fingernail Test
               </div>
               <p style={{ fontSize: "0.84rem", color: "var(--text-secondary)" }}>
-                Take the edge of a coin or house key and scratch the unpolished underside of the
-                plate. Real Makrana marble will <strong>never scratch</strong>. Cheap soapstone will
-                produce white dust immediately.
+                Press a fingernail firmly into the unpolished underside of the plate. Soapstone and
+                alabaster are soft enough to <strong>mark under a fingernail</strong>; real Makrana
+                marble won&apos;t. (A key or coin can scratch genuine marble too, so don&apos;t let
+                a seller use that as proof.)
               </p>
             </div>
 
@@ -182,9 +183,10 @@ export function ArtisanCrafts() {
                 2. The Smartphone Torch Test
               </div>
               <p style={{ fontSize: "0.84rem", color: "var(--text-secondary)" }}>
-                Hold your phone flashlight flush against the underside of the stone inlay. Genuine
-                semi-precious carnelian and lapis lazuli glow with deep translucent radiance.
-                Plastic resin blocks the beam completely.
+                Hold your phone flashlight flush against the stone. Genuine Makrana marble is
+                translucent and glows softly around the beam, and translucent inlay stones like
+                carnelian light up from within. Painted or plastic imitations look flat and evenly
+                coloured.
               </p>
             </div>
 
@@ -205,7 +207,7 @@ export function ArtisanCrafts() {
             >
               {scratchTestPassed
                 ? "✓ Authenticity Rule Memorized"
-                : "Tap to Save the Scratch & Torch Rule"}
+                : "Tap to Save the Fingernail & Torch Rule"}
             </button>
           </div>
         </div>

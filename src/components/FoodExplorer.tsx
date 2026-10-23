@@ -1,16 +1,22 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { FOOD_DATA, PlaceItem } from "@/data/agraData";
+import { PlaceImage } from "@/components/PlaceImage";
 
 interface FoodExplorerProps {
   searchQuery: string;
   savedItemIds: string[];
   onToggleSaveItem: (place: PlaceItem) => void;
+  onClearSearch: () => void;
 }
 
-export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: FoodExplorerProps) {
+export function FoodExplorer({
+  searchQuery,
+  savedItemIds,
+  onToggleSaveItem,
+  onClearSearch,
+}: FoodExplorerProps) {
   const [activeTasteCategory, setActiveTasteCategory] = useState<string>("all");
 
   const tasteTabs = [
@@ -74,6 +80,8 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
         {/* Category Tabs - Swipeable on mobile */}
         <div
           className="horizontal-scroll-chips"
+          role="group"
+          aria-label="Filter food spots"
           style={{
             marginBottom: "1.8rem",
           }}
@@ -84,6 +92,7 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
               <button
                 key={tab.id}
                 type="button"
+                aria-pressed={isSelected}
                 onClick={() => setActiveTasteCategory(tab.id)}
                 style={{
                   padding: "0.55rem 1.15rem",
@@ -95,7 +104,7 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
                   whiteSpace: "nowrap",
                   minHeight: "40px",
                   backgroundColor: isSelected ? "var(--color-brass)" : "var(--bg-surface)",
-                  color: isSelected ? "#ffffff" : "var(--text-secondary)",
+                  color: isSelected ? "var(--text-on-accent)" : "var(--text-secondary)",
                   border: isSelected
                     ? "1px solid var(--color-brass)"
                     : "1px solid var(--border-subtle)",
@@ -137,10 +146,13 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
             </p>
             <button
               type="button"
-              onClick={() => setActiveTasteCategory("all")}
+              onClick={() => {
+                setActiveTasteCategory("all");
+                onClearSearch();
+              }}
               className="btn-secondary"
             >
-              Show All Food
+              Clear Search & Show All Food
             </button>
           </div>
         ) : (
@@ -174,16 +186,7 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
                       overflow: "hidden",
                     }}
                   >
-                    <Image
-                      src={spot.image}
-                      alt={spot.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{
-                        objectFit: "cover",
-                        transition: "transform 0.4s ease",
-                      }}
-                    />
+                    <PlaceImage place={spot} sizes="(max-width: 768px) 100vw, 33vw" />
                     <div
                       style={{
                         position: "absolute",
@@ -420,6 +423,7 @@ export function FoodExplorer({ searchQuery, savedItemIds, onToggleSaveItem }: Fo
                         onClick={() => onToggleSaveItem(spot)}
                         style={{
                           width: "100%",
+                          minHeight: "40px",
                           padding: "0.55rem 1rem",
                           borderRadius: "var(--pill-radius)",
                           fontSize: "0.84rem",

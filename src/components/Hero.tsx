@@ -1,27 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "motion/react";
 
 interface HeroProps {
+  searchQuery: string;
   onSearchQueryChange: (query: string) => void;
   onSelectQuickCategory: (category: "monument" | "food" | "craft" | "all") => void;
 }
 
-export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) {
-  const [searchInput, setSearchInput] = useState("");
-
+export function Hero({ searchQuery, onSearchQueryChange, onSelectQuickCategory }: HeroProps) {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextQuery = event.target.value;
-    setSearchInput(nextQuery);
-    onSearchQueryChange(nextQuery);
+    onSearchQueryChange(event.target.value);
   };
 
   const handleChipClick = (category: "monument" | "food" | "craft" | "all") => {
     onSelectQuickCategory(category);
     const targetElement = document.getElementById(category === "food" ? "food" : "monuments");
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth" });
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      targetElement.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth" });
     }
   };
 
@@ -158,6 +156,7 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
           }}
         >
           <div
+            className="hero-search-field"
             style={{
               display: "flex",
               alignItems: "center",
@@ -170,6 +169,7 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
             }}
           >
             <span
+              aria-hidden="true"
               style={{
                 fontSize: "1rem",
                 marginRight: "0.5rem",
@@ -181,7 +181,8 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
             <input
               id="hero-quick-search-input"
               type="text"
-              value={searchInput}
+              aria-label="Search monuments and food spots"
+              value={searchQuery}
               onChange={handleInputChange}
               placeholder="Search Bedmi, Petha, Fort, Sunset..."
               style={{
@@ -195,16 +196,15 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
                 minWidth: 0,
               }}
             />
-            {searchInput.length > 0 && (
+            {searchQuery.length > 0 && (
               <button
                 type="button"
-                onClick={() => {
-                  setSearchInput("");
-                  onSearchQueryChange("");
-                }}
+                onClick={() => onSearchQueryChange("")}
+                aria-label="Clear search"
                 style={{
                   color: "var(--text-muted)",
-                  padding: "0.3rem 0.5rem",
+                  minWidth: "36px",
+                  minHeight: "36px",
                   fontSize: "0.85rem",
                 }}
               >
@@ -227,10 +227,9 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
 
           {/* Quick Filter Tag Buttons */}
           <div
-            className="horizontal-scroll-chips"
+            className="horizontal-scroll-chips chips-centered"
             style={{
               marginTop: "0.85rem",
-              justifyContent: "center",
             }}
           >
             <button
@@ -241,7 +240,7 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
                 padding: "0.35rem 0.8rem",
                 fontSize: "0.78rem",
                 whiteSpace: "nowrap",
-                minHeight: "34px",
+                minHeight: "40px",
                 flexShrink: 0,
               }}
             >
@@ -255,7 +254,7 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
                 padding: "0.35rem 0.8rem",
                 fontSize: "0.78rem",
                 whiteSpace: "nowrap",
-                minHeight: "34px",
+                minHeight: "40px",
                 flexShrink: 0,
               }}
             >
@@ -269,7 +268,7 @@ export function Hero({ onSearchQueryChange, onSelectQuickCategory }: HeroProps) 
                 padding: "0.35rem 0.8rem",
                 fontSize: "0.78rem",
                 whiteSpace: "nowrap",
-                minHeight: "34px",
+                minHeight: "40px",
                 flexShrink: 0,
               }}
             >

@@ -1,19 +1,21 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { MONUMENTS_DATA, PlaceItem } from "@/data/agraData";
+import { PlaceImage } from "@/components/PlaceImage";
 
 interface PlacesExplorerProps {
   searchQuery: string;
   savedItemIds: string[];
   onToggleSaveItem: (place: PlaceItem) => void;
+  onClearSearch: () => void;
 }
 
 export function PlacesExplorer({
   searchQuery,
   savedItemIds,
   onToggleSaveItem,
+  onClearSearch,
 }: PlacesExplorerProps) {
   const [activeFilter, setActiveFilter] = useState<string>("all");
   const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
@@ -81,6 +83,8 @@ export function PlacesExplorer({
         {/* Filter Pills - Swipeable on mobile */}
         <div
           className="horizontal-scroll-chips"
+          role="group"
+          aria-label="Filter monuments"
           style={{
             marginBottom: "1.8rem",
           }}
@@ -91,6 +95,7 @@ export function PlacesExplorer({
               <button
                 key={filter.id}
                 type="button"
+                aria-pressed={isSelected}
                 onClick={() => setActiveFilter(filter.id)}
                 style={{
                   padding: "0.55rem 1.15rem",
@@ -102,7 +107,7 @@ export function PlacesExplorer({
                   whiteSpace: "nowrap",
                   minHeight: "40px",
                   backgroundColor: isSelected ? "var(--color-sandstone)" : "var(--bg-surface)",
-                  color: isSelected ? "#ffffff" : "var(--text-secondary)",
+                  color: isSelected ? "var(--text-on-accent)" : "var(--text-secondary)",
                   border: isSelected
                     ? "1px solid var(--color-sandstone)"
                     : "1px solid var(--border-subtle)",
@@ -142,8 +147,15 @@ export function PlacesExplorer({
               Try searching for &quot;Taj&quot;, &quot;Fort&quot;, &quot;Sikri&quot;, or clearing
               the filter.
             </p>
-            <button type="button" onClick={() => setActiveFilter("all")} className="btn-secondary">
-              Reset Filters
+            <button
+              type="button"
+              onClick={() => {
+                setActiveFilter("all");
+                onClearSearch();
+              }}
+              className="btn-secondary"
+            >
+              Clear Search & Filters
             </button>
           </div>
         ) : (
@@ -178,16 +190,7 @@ export function PlacesExplorer({
                       overflow: "hidden",
                     }}
                   >
-                    <Image
-                      src={place.image}
-                      alt={place.name}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 33vw"
-                      style={{
-                        objectFit: "cover",
-                        transition: "transform 0.4s ease",
-                      }}
-                    />
+                    <PlaceImage place={place} sizes="(max-width: 768px) 100vw, 33vw" />
                     <div
                       style={{
                         position: "absolute",
@@ -368,6 +371,7 @@ export function PlacesExplorer({
                     {/* Collapsible Insider Tip & Highlights */}
                     {isExpanded && (
                       <div
+                        id={`${place.id}-secrets`}
                         style={{
                           borderTop: "1px solid var(--border-subtle)",
                           paddingTop: "0.8rem",
@@ -422,10 +426,14 @@ export function PlacesExplorer({
                       <button
                         type="button"
                         onClick={() => toggleCardExpansion(place.id)}
+                        aria-expanded={isExpanded}
+                        aria-controls={`${place.id}-secrets`}
                         style={{
                           fontSize: "0.82rem",
                           color: "var(--color-sandstone)",
                           fontWeight: 500,
+                          minHeight: "40px",
+                          paddingRight: "0.5rem",
                         }}
                       >
                         {isExpanded ? "Less ▲" : "Visitor Secrets ▼"}
@@ -435,6 +443,7 @@ export function PlacesExplorer({
                         type="button"
                         onClick={() => onToggleSaveItem(place)}
                         style={{
+                          minHeight: "40px",
                           padding: "0.45rem 0.9rem",
                           borderRadius: "var(--pill-radius)",
                           fontSize: "0.82rem",

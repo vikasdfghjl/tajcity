@@ -61,6 +61,8 @@ export function TipsAndFAQ() {
                   <button
                     type="button"
                     onClick={() => toggleTip(tip.id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`${tip.id}-details`}
                     style={{
                       width: "100%",
                       padding: "1rem 1.15rem",
@@ -99,6 +101,7 @@ export function TipsAndFAQ() {
                       </div>
                     </div>
                     <span
+                      aria-hidden="true"
                       style={{
                         color: "var(--color-sandstone)",
                         fontSize: "0.85rem",
@@ -112,6 +115,7 @@ export function TipsAndFAQ() {
 
                   {isOpen && (
                     <div
+                      id={`${tip.id}-details`}
                       style={{
                         padding: "0 1.15rem 1.15rem 1.15rem",
                         borderTop: "1px solid var(--border-subtle)",

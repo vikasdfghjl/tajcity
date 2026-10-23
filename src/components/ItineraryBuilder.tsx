@@ -1,7 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
-import { ITINERARY_PRESETS, PlaceItem, MONUMENTS_DATA, FOOD_DATA } from "@/data/agraData";
+import React, { useEffect, useEffectEvent, useRef, useState } from "react";
+import {
+  ITINERARY_PRESETS,
+  PlaceItem,
+  MONUMENTS_DATA,
+  FOOD_DATA,
+  CRAFT_AND_GEMS_DATA,
+} from "@/data/agraData";
+
+const FOCUSABLE_SELECTOR =
+  'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 interface ItineraryBuilderProps {
   savedItems: PlaceItem[];
@@ -21,13 +30,15 @@ export function ItineraryBuilder({
   onClearItems,
 }: ItineraryBuilderProps) {
   const [selectedPresetId, setSelectedPresetId] = useState<string>("1-day-express");
-  const [copiedToClipboard, setCopiedToClipboard] = useState(false);
+  const [copyStatus, setCopyStatus] = useState<"idle" | "copied" | "failed">("idle");
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   const activePreset =
     ITINERARY_PRESETS.find((preset) => preset.id === selectedPresetId) ?? ITINERARY_PRESETS[0];
 
   const handleApplyCurrentPreset = () => {
-    const allKnownPlaces = [...MONUMENTS_DATA, ...FOOD_DATA];
+    const allKnownPlaces = [...MONUMENTS_DATA, ...FOOD_DATA, ...CRAFT_AND_GEMS_DATA];
     const placesToSave: PlaceItem[] = [];
 
     activePreset.stops.forEach((stop) => {
@@ -37,8 +48,72 @@ export function ItineraryBuilder({
       }
     });
 
+    // Loading a preset replaces the plan, so confirm before dropping stops the user added
+    const droppedItems = savedItems.filter(
+      (item) => !placesToSave.some((place) => place.id === item.id),
+    );
+    if (droppedItems.length > 0) {
+      const droppedNames = droppedItems.map((item) => item.name).join(", ");
+      const confirmed = window.confirm(
+        `Loading this trail will replace your current plan and remove: ${droppedNames}. Continue?`,
+      );
+      if (!confirmed) {
+        return;
+      }
+    }
+
     onApplyPreset(placesToSave);
   };
+
+  const handleDrawerKeyDown = useEffectEvent((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      onCloseDrawer();
+      return;
+    }
+
+    const panel = panelRef.current;
+    if (event.key !== "Tab" || !panel) {
+      return;
+    }
+
+    // Keep Tab focus cycling inside the drawer while it is open
+    const focusableElements = panel.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR);
+    if (focusableElements.length === 0) {
+      return;
+    }
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+    const activeElement = document.activeElement;
+
+    if (!panel.contains(activeElement)) {
+      event.preventDefault();
+      firstElement.focus();
+    } else if (event.shiftKey && activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+    } else if (!event.shiftKey && activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  });
+
+  useEffect(() => {
+    if (!isDrawerOpen) {
+      return;
+    }
+
+    const previouslyFocusedElement = document.activeElement as HTMLElement | null;
+    const previousBodyOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
+    document.addEventListener("keydown", handleDrawerKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleDrawerKeyDown);
+      document.body.style.overflow = previousBodyOverflow;
+      previouslyFocusedElement?.focus();
+    };
+  }, [isDrawerOpen]);
 
   const handleCopyItinerary = async () => {
     // Guard clause: no items to copy
@@ -59,12 +134,18 @@ export function ItineraryBuilder({
 
     try {
       await navigator.clipboard.writeText(itineraryText);
-      setCopiedToClipboard(true);
-      setTimeout(() => setCopiedToClipboard(false), 2500);
+      setCopyStatus("copied");
     } catch {
-      alert("Itinerary copied to clipboard!");
+      setCopyStatus("failed");
     }
+    setTimeout(() => setCopyStatus("idle"), 3000);
   };
+
+  const copyButtonLabel = {
+    idle: "Copy My Day Plan",
+    copied: "✓ Copied to Clipboard!",
+    failed: "Couldn't copy. Check clipboard permissions and try again",
+  }[copyStatus];
 
   return (
     <section id="itineraries" className="section-padding">
@@ -83,6 +164,8 @@ export function ItineraryBuilder({
         {/* Preset Selector Tabs - Swipeable on mobile */}
         <div
           className="horizontal-scroll-chips"
+          role="group"
+          aria-label="Itinerary presets"
           style={{
             marginBottom: "1.8rem",
           }}
@@ -93,6 +176,7 @@ export function ItineraryBuilder({
               <button
                 key={preset.id}
                 type="button"
+                aria-pressed={isSelected}
                 onClick={() => setSelectedPresetId(preset.id)}
                 style={{
                   padding: "0.55rem 1.15rem",
@@ -104,7 +188,7 @@ export function ItineraryBuilder({
                   whiteSpace: "nowrap",
                   minHeight: "40px",
                   backgroundColor: isSelected ? "var(--color-sandstone)" : "var(--bg-surface)",
-                  color: isSelected ? "#ffffff" : "var(--text-secondary)",
+                  color: isSelected ? "var(--text-on-accent)" : "var(--text-secondary)",
                   border: isSelected
                     ? "1px solid var(--color-sandstone)"
                     : "1px solid var(--border-subtle)",
@@ -306,6 +390,10 @@ export function ItineraryBuilder({
         <div id="itinerary-drawer-backdrop" className="itinerary-backdrop" onClick={onCloseDrawer}>
           <div
             id="itinerary-drawer-panel"
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="itinerary-drawer-title"
             className="itinerary-panel"
             onClick={(e) => e.stopPropagation()}
           >
@@ -334,6 +422,7 @@ export function ItineraryBuilder({
             >
               <div>
                 <h3
+                  id="itinerary-drawer-title"
                   style={{
                     fontSize: "1.3rem",
                     fontWeight: 700,
@@ -352,12 +441,15 @@ export function ItineraryBuilder({
                 </span>
               </div>
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={onCloseDrawer}
+                aria-label="Close plan"
                 style={{
                   fontSize: "1.3rem",
                   color: "var(--text-muted)",
-                  padding: "0.2rem 0.5rem",
+                  minWidth: "40px",
+                  minHeight: "40px",
                 }}
               >
                 ✕
@@ -435,7 +527,7 @@ export function ItineraryBuilder({
                           height: "1.5rem",
                           borderRadius: "50%",
                           backgroundColor: "var(--color-sandstone)",
-                          color: "#ffffff",
+                          color: "var(--text-on-accent)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -481,11 +573,14 @@ export function ItineraryBuilder({
                         type="button"
                         onClick={() => onRemoveItem(item.id)}
                         title="Remove stop"
+                        aria-label={`Remove ${item.name} from plan`}
                         style={{
                           color: "var(--color-ruby)",
                           fontSize: "1rem",
-                          padding: "0.2rem 0.4rem",
-                          opacity: 0.8,
+                          minWidth: "40px",
+                          minHeight: "40px",
+                          marginTop: "-0.5rem",
+                          marginRight: "-0.5rem",
                         }}
                       >
                         ✕
@@ -510,7 +605,7 @@ export function ItineraryBuilder({
                     className="btn-primary"
                     style={{ width: "100%" }}
                   >
-                    {copiedToClipboard ? "✓ Copied to Clipboard!" : "Copy My Day Plan"}
+                    {copyButtonLabel}
                   </button>
 
                   <button

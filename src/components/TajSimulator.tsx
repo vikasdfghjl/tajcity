@@ -27,6 +27,8 @@ export function TajSimulator() {
         {/* Time Selector Pills - Swipeable on mobile */}
         <div
           className="horizontal-scroll-chips"
+          role="group"
+          aria-label="Arrival time window"
           style={{
             marginBottom: "1.8rem",
           }}
@@ -37,6 +39,7 @@ export function TajSimulator() {
               <button
                 key={slot.id}
                 type="button"
+                aria-pressed={isSelected}
                 onClick={() => setSelectedSlotId(slot.id)}
                 style={{
                   padding: "0.55rem 1.15rem",
@@ -48,7 +51,7 @@ export function TajSimulator() {
                   whiteSpace: "nowrap",
                   minHeight: "40px",
                   backgroundColor: isSelected ? "var(--color-sandstone)" : "var(--bg-surface)",
-                  color: isSelected ? "#ffffff" : "var(--text-secondary)",
+                  color: isSelected ? "var(--text-on-accent)" : "var(--text-secondary)",
                   border: isSelected
                     ? "1px solid var(--color-sandstone)"
                     : "1px solid var(--border-subtle)",
