@@ -6,7 +6,7 @@ export interface PlaceItem {
   subCategory?: string;
   rating: number;
   reviewCount: number;
-  image: string;
+  image?: string; // Only set when we have a photo of this exact place
   tagline: string;
   description: string;
   timings: string;
@@ -66,7 +66,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "0 km (Ground Zero)",
     bestTime: "Sunrise (5:45 AM - 7:30 AM) for golden glow and thinnest crowds",
     insiderTip:
-      "Always enter via the East Gate (VIP/Pre-booked) — it moves 3x faster than the crowded West Gate. Do not bring tripods, power banks, tobacco, or books inside.",
+      "Always enter via the East Gate (VIP/Pre-booked); it moves 3x faster than the crowded West Gate. Do not bring tripods, power banks, tobacco, or books inside.",
     mustTryOrSee: [
       "The Central Pool Reflection at dawn",
       "Pietra Dura semi-precious floral inlays on marble walls",
@@ -114,7 +114,6 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     subCategory: "Ancient Capital",
     rating: 4.6,
     reviewCount: 68000,
-    image: "/images/agra_fort.jpg",
     tagline: "Emperor Akbar's mystical ghost city & Buland Darwaza",
     description:
       "Built by Emperor Akbar in 1571 to honor Sufi saint Sheikh Salim Chishti, this UNESCO World Heritage city was abandoned after just 14 years due to water shortage. It remains impeccably preserved with soaring gateways, courtyards, and white marble shrines.",
@@ -128,7 +127,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "38 km (1 hour drive)",
     bestTime: "Morning (8:30 AM - 12:00 PM) before the desert sun gets intense",
     insiderTip:
-      "Tie a red sacred thread at the jali screen of Salim Chishti's Dargah — centuries of emperors and travelers have made wishes here. Beware of unlicensed aggressive guides outside Buland Darwaza.",
+      "Tie a red sacred thread at the jali screen of Salim Chishti's Dargah. Centuries of emperors and travelers have made wishes here. Beware of unlicensed aggressive guides outside Buland Darwaza.",
     mustTryOrSee: [
       "Buland Darwaza (54m high 'Door of Victory')",
       "White marble tomb of Salim Chishti",
@@ -145,7 +144,6 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     subCategory: "Sunset Oasis",
     rating: 4.5,
     reviewCount: 45000,
-    image: "/images/taj_hero.jpg",
     tagline: "The tranquil riverside garden with unobstructed sunset Taj silhouettes",
     description:
       "A Charbagh complex situated north of the Taj Mahal across the Yamuna River. Aligned perfectly with the Taj, it was built by Emperor Babur and later restored. It provides breathtaking views without the high security lines or crowded marble courtyards.",
@@ -175,7 +173,6 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     subCategory: "Jewel Box Tomb",
     rating: 4.6,
     reviewCount: 39000,
-    image: "/images/marble_craft.jpg",
     tagline: "The delicate forerunner and artistic blueprint of the Taj Mahal",
     description:
       "Built between 1622 and 1628 by Empress Nur Jahan for her father Mirza Ghiyas Beg, this tomb marked the transition from red sandstone to white marble with semi-precious stone Pietra Dura inlays. Its delicate lattice jali work is considered by scholars even finer than the Taj itself.",
@@ -205,7 +202,6 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     subCategory: "Dynasty Tomb",
     rating: 4.5,
     reviewCount: 29000,
-    image: "/images/agra_fort.jpg",
     tagline: "The resting place of Mughal Empire's greatest ruler amid roaming blackbucks",
     description:
       "A monumental pyramid-shaped tomb built with red sandstone and white marble minarets, set inside a sprawling 119-acre walled park. Blackbucks, deer, and peacocks freely wander across the lush gardens surrounding the Emperor's tomb chamber.",
@@ -219,7 +215,7 @@ export const MONUMENTS_DATA: PlaceItem[] = [
     distanceFromTaj: "14 km (25 mins drive)",
     bestTime: "Early morning or late afternoon",
     insiderTip:
-      "Look at the Southern Gate (Buland Gate of Sikandra) — its calligraphic inscriptions and tile-work rival the finest monuments in Central Asia.",
+      "Look at the Southern Gate (Buland Gate of Sikandra): its calligraphic inscriptions and tile-work rival the finest monuments in Central Asia.",
     mustTryOrSee: [
       "Southern Grand Gateway with 4 marble minarets",
       "Spotted deer and peacocks roaming the gardens",
@@ -238,7 +234,6 @@ export const FOOD_DATA: PlaceItem[] = [
     subCategory: "Legendary Sweet",
     rating: 4.8,
     reviewCount: 94000,
-    image: "/images/agra_food.jpg",
     tagline: "Agra's trademark translucent ash gourd sweet in 30+ royal flavors",
     description:
       "Agra and Petha are inseparable. Prepared from peeled winter melon (white pumpkin), alum, and sugar syrup, this dessert was supposedly invented by royal chefs during the Taj Mahal's construction to energize 20,000 workers. Panchhi Petha is the golden gold-standard since 1950.",
@@ -292,7 +287,6 @@ export const FOOD_DATA: PlaceItem[] = [
     subCategory: "Fine Dining Mughlai",
     rating: 4.7,
     reviewCount: 38000,
-    image: "/images/agra_food.jpg",
     tagline: "Agra's undisputed benchmark for royal Mughlai & North Indian curries",
     description:
       "A sophisticated, award-winning culinary destination on Fatehabad Road. Celebrated for its velvety gravies, clay-oven tandoor kebabs, and royal Awadhi & Mughlai recipes cooked with artisanal slow-simmering methods.",
@@ -300,7 +294,7 @@ export const FOOD_DATA: PlaceItem[] = [
     priceRange: "₹₹₹ - Fine Dining (₹800 - ₹1,500 per person)",
     location: "Fatehabad Road, Tajganj, Agra",
     distanceFromTaj: "2.1 km",
-    bestTime: "Dinner (8:00 PM - 10:30 PM) — Book 1-2 hours in advance during peak season",
+    bestTime: "Dinner (8:00 PM - 10:30 PM). Book 1-2 hours in advance during peak season",
     insiderTip:
       "Their signature 'Chicken Tikka Lababdar' and 'Dal Pinch of Spice' (slow-cooked black lentils simmered for 24 hours with butter and cream) are unmatched anywhere in western UP.",
     mustTryOrSee: [
@@ -319,7 +313,6 @@ export const FOOD_DATA: PlaceItem[] = [
     subCategory: "Social Impact & Soul Food",
     rating: 4.9,
     reviewCount: 31000,
-    image: "/images/agra_food.jpg",
     tagline: "An inspiring café powered with courage by acid attack survivor warriors",
     description:
       "Located minutes from the Taj Mahal, Sheroes is a pay-what-you-wish community café operated entirely by courageous acid attack survivors. It features an in-house library, art exhibits, comforting shakes, noodles, pasta, parathas, and meaningful conversations that move every visitor.",
@@ -345,7 +338,6 @@ export const FOOD_DATA: PlaceItem[] = [
     subCategory: "Evening Street Food",
     rating: 4.6,
     reviewCount: 26000,
-    image: "/images/agra_food.jpg",
     tagline: "Sizzling kathi rolls, butter chicken frankies & spicy mutton wraps",
     description:
       "The undisputed evening youth hangout of Sadar Bazaar. Famous for its flaky paratha rolls wrapped around smoking tandoori meats, melting butter, green chilies, onions, and secret chaat masala.",
@@ -371,10 +363,9 @@ export const FOOD_DATA: PlaceItem[] = [
     subCategory: "Street Chaat Hub",
     rating: 4.7,
     reviewCount: 41000,
-    image: "/images/agra_food.jpg",
     tagline: "Sensory explosion of Agra Bhalla, crispy Golgappe & Dahi Gujiya",
     description:
-      "A vibrant culinary alley inside Sadar Bazaar packed with legendary chaat-walas. Agra is famous for its 'Bhalla' — unlike Delhi's aloo tikki, Agra's Bhalla is double-fried in pure desi ghee until shatteringly crisp, then drowned in spiced sweet dahi, zesty mint, and sonth chutney.",
+      "A vibrant culinary alley inside Sadar Bazaar packed with legendary chaat-walas. Agra is famous for its 'Bhalla'. Unlike Delhi's aloo tikki, Agra's Bhalla is double-fried in pure desi ghee until shatteringly crisp, then drowned in spiced sweet dahi, zesty mint, and sonth chutney.",
     timings: "4:00 PM - 10:30 PM",
     priceRange: "₹ - Street Food (₹50 - ₹120 per plate)",
     location: "Chaat Gali, Sadar Bazaar, Agra",
@@ -409,7 +400,7 @@ export const CRAFT_AND_GEMS_DATA: PlaceItem[] = [
     distanceFromTaj: "1.5 km",
     bestTime: "Afternoon 1:00 PM - 4:00 PM",
     insiderTip:
-      "How to spot real marble: Scratch it gently with a key or coin on an unpolished underside. Real Makrana marble will not scratch; cheap soapstone/alabaster will powder immediately. Real lapis lazuli is translucent when a flashlight is held under it.",
+      "How to spot real marble: Press a fingernail into an unpolished underside. Soapstone and alabaster are soft enough to mark with a fingernail; real Makrana marble is not. Then hold a phone torch against it: genuine marble glows softly around the beam.",
     mustTryOrSee: [
       "Live demonstration of hand chiseling and stone fitting",
       "Coasters and jewelry boxes with floral motifs",
@@ -424,7 +415,6 @@ export const CRAFT_AND_GEMS_DATA: PlaceItem[] = [
     category: "craft",
     rating: 4.5,
     reviewCount: 33000,
-    image: "/images/agra_food.jpg",
     tagline: "India's shoe capital: handcrafted leather boots, jackets & rugs",
     description:
       "Agra is the footwear manufacturing capital of India, producing nearly 65% of the domestic leather shoes and substantial global exports. Sadar Bazaar is packed with authorized factory outlets and custom cobblers making Goodyear-welted shoes, genuine leather jackets, and camel-skin bags.",
@@ -736,9 +726,9 @@ export const AGRA_SMART_TIPS = [
     title: "Souvenir Scam Prevention: Real vs Fake Marble",
     importance: "SHOPPING SMART",
     summary:
-      "Many rogue souvenir shops sell soft soapstone (gorara/alabaster) painted to look like genuine Makrana marble at exorbitant prices.",
+      "Many rogue souvenir shops sell soft soapstone (gorara) or alabaster, polished to look like genuine Makrana marble, at exorbitant prices.",
     solution:
-      "Run the coin scratch test: Real Makrana marble cannot be scratched with a coin or key. Furthermore, real inlaid lapis lazuli and carnelian let light shine through when backlit with your phone flashlight.",
+      "Run the fingernail test on an unpolished underside: soapstone and alabaster mark under a fingernail, real marble does not. Then hold your phone torch against the stone: genuine marble is translucent and glows around the beam, and translucent inlay stones like carnelian light up from within.",
   },
   {
     id: "petha-copycats",
