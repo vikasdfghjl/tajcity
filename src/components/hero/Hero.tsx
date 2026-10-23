@@ -1,7 +1,7 @@
 import { ArrowRight } from "@phosphor-icons/react/ssr";
 import { CommonsImage } from "@/components/ui/CommonsImage";
 import { LiveStatus } from "@/components/hero/LiveStatus";
-import { HERO_PHOTO } from "@/data/places";
+import { HERO_PHOTO } from "@/data/commons";
 
 export function Hero() {
   return (

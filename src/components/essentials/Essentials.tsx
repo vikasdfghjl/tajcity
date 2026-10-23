@@ -1,15 +1,16 @@
+import { DESKTOP_MEDIA_QUERY, INLAY_PLACE_ID } from "@/config/constants";
 import {
-  Backpack,
   BatteryCharging,
-  Cards,
   Cigarette,
   Drone,
   Fire,
   ForkKnife,
+  Headphones,
   Knife,
   Leaf,
   SealCheck,
   Ticket,
+  Wine,
 } from "@phosphor-icons/react/ssr";
 import { FridayTile } from "@/components/essentials/FridayTile";
 import { CommonsImage } from "@/components/ui/CommonsImage";
@@ -17,18 +18,19 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getPlace } from "@/data/places";
 
+// From the official Taj Mahal dos and don'ts
 const NOT_ALLOWED = [
   { label: "Drones", Icon: Drone },
-  { label: "Power banks", Icon: BatteryCharging },
-  { label: "Lighters", Icon: Fire },
-  { label: "Tobacco", Icon: Cigarette },
-  { label: "Knives", Icon: Knife },
   { label: "Food", Icon: ForkKnife },
-  { label: "Big bags", Icon: Backpack },
-  { label: "Playing cards", Icon: Cards },
+  { label: "Tobacco", Icon: Cigarette },
+  { label: "Lighters", Icon: Fire },
+  { label: "Knives", Icon: Knife },
+  { label: "Chargers", Icon: BatteryCharging },
+  { label: "Headphones", Icon: Headphones },
+  { label: "Alcohol", Icon: Wine },
 ];
 
-const INLAY_PHOTO = getPlace("pietra-dura-inlay")?.photo;
+const INLAY_PHOTO = getPlace(INLAY_PLACE_ID)?.photo;
 
 export function Essentials() {
   return (
@@ -56,8 +58,8 @@ export function Essentials() {
               <div>
                 <h3 className="text-2xl font-semibold">Book tickets the night before</h3>
                 <p className="mt-2 max-w-[48ch] text-[15px] leading-relaxed text-ink-2">
-                  Counter queues at peak hours can run past 45 minutes. Buy online on the ASI site,
-                  add the mausoleum entry, and walk straight to security.
+                  Buy on the ASI portal: it's ₹5 cheaper for Indians and ₹50 cheaper for foreigners,
+                  and foreign tickets include shoe covers, water and the battery bus.
                 </p>
               </div>
             </div>
@@ -69,8 +71,8 @@ export function Essentials() {
               <div>
                 <p className="font-mono text-5xl leading-none tracking-tight">500 m</p>
                 <p className="mt-3 text-[15px] leading-snug text-ink-2">
-                  No petrol or diesel vehicles this close to the Taj. Walk the last stretch or take
-                  a battery cart from the parking.
+                  No polluting vehicles this close to the Taj. Battery buses and golf carts run from
+                  Shilpgram (East Gate) and Amrood ka Tila (West Gate) parking.
                 </p>
               </div>
             </div>
@@ -90,7 +92,8 @@ export function Essentials() {
                 ))}
               </ul>
               <p className="border-t border-line pt-4 text-sm text-ink-3">
-                Phones, cameras and a small water bottle are fine. Tripods are not.
+                Phones on silent, cameras and water bottles are fine. Tripods need ASI permission;
+                keep bags small and leave books behind.
               </p>
             </div>
           </Reveal>
@@ -102,7 +105,7 @@ export function Essentials() {
                   <CommonsImage
                     photo={INLAY_PHOTO}
                     alt="An artisan setting stone into a marble inlay panel"
-                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    sizes={`${DESKTOP_MEDIA_QUERY} 50vw, 100vw`}
                   />
                 </div>
               )}
@@ -127,8 +130,8 @@ export function Essentials() {
               <div>
                 <h3 className="text-xl font-semibold">Petha copycats</h3>
                 <p className="mt-2 text-[15px] leading-snug text-ink-2">
-                  Hundreds of shops borrow the Panchhi name. Buy at the Hari Parvat or Sadar Bazaar
-                  stores and check the batch date on the box.
+                  Many shops copy the Panchhi name. Buy at the brand's own stores, such as Hari
+                  Parvat or Sadar Bazaar, and check the date on the box.
                 </p>
               </div>
             </div>

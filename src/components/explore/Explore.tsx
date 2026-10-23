@@ -1,5 +1,6 @@
 "use client";
 
+import { EXPLORE_TABS } from "@/config/constants";
 import { MagnifyingGlass, X } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useDeferredValue, useState } from "react";
@@ -8,12 +9,6 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
 import { PLACES, type Place, type PlaceKind } from "@/data/places";
 import { cn } from "@/lib/cn";
-
-const KINDS: { value: PlaceKind; label: string }[] = [
-  { value: "monument", label: "Monuments" },
-  { value: "food", label: "Food" },
-  { value: "craft", label: "Craft" },
-];
 
 function matches(place: Place, query: string): boolean {
   const haystack = [
@@ -62,7 +57,7 @@ export function Explore() {
               setKind(value);
               setQuery("");
             }}
-            options={KINDS.map((option) => ({
+            options={EXPLORE_TABS.map((option) => ({
               ...option,
               count: PLACES.filter((place) => place.kind === option.value).length,
             }))}

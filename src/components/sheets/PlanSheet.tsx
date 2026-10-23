@@ -1,5 +1,6 @@
 "use client";
 
+import { PLACE_KIND_LABEL, STARTER_PRESET_ID, TAJ_PLACE_ID, THUMB_WIDTH } from "@/config/constants";
 import {
   ArrowSquareOut,
   DotsSixVertical,
@@ -13,8 +14,8 @@ import { Reorder, useDragControls } from "motion/react";
 import { useState } from "react";
 import { SheetFrame } from "@/components/sheets/SheetFrame";
 import { photoUrl } from "@/components/ui/CommonsImage";
-import { ITINERARY_PRESETS } from "@/data/agraData";
-import { KIND_LABEL, getPlace, routeUrl, shortHours, type Place } from "@/data/places";
+import { ITINERARY_PRESETS } from "@/data/itineraries";
+import { getPlace, routeUrl, shortHours, type Place } from "@/data/places";
 import { planActions, sheetActions, showToast, usePlan, useSheet } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
@@ -41,7 +42,7 @@ function PlanRow({ place, index }: { place: Place; index: number }) {
         {place.photo ? (
           // oxlint-disable-next-line nextjs/no-img-element -- Commons thumbnail, see CommonsImage
           <img
-            src={photoUrl(place.photo, 330)}
+            src={photoUrl(place.photo, THUMB_WIDTH)}
             alt=""
             className="h-full w-full object-cover"
             loading="lazy"
@@ -58,7 +59,7 @@ function PlanRow({ place, index }: { place: Place; index: number }) {
           {place.name}
         </p>
         <p className="truncate text-xs text-ink-3">
-          {KIND_LABEL[place.kind]}, {shortHours(place)}
+          {PLACE_KIND_LABEL[place.kind]}, {shortHours(place)}
         </p>
       </div>
       <button
@@ -84,7 +85,7 @@ export function PlanSheet() {
   const [confirmClear, setConfirmClear] = useState(false);
   const places = plan.map(getPlace).filter((place): place is Place => Boolean(place));
   const route = routeUrl(places);
-  const hasTaj = plan.includes("taj-mahal");
+  const hasTaj = plan.includes(TAJ_PLACE_ID);
 
   const sharePlan = async () => {
     const text = [
@@ -189,7 +190,7 @@ export function PlanSheet() {
           <div className="mt-6 flex flex-col gap-2">
             <button
               type="button"
-              onClick={() => planActions.replace(presetIds("1-day-express"))}
+              onClick={() => planActions.replace(presetIds(STARTER_PRESET_ID))}
               className="min-h-12 rounded-full bg-accent px-5 text-[15px] font-semibold text-accent-ink"
             >
               Start from the one-day classic

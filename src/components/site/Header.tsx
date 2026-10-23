@@ -4,7 +4,8 @@ import { ListChecks } from "@phosphor-icons/react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { SECTIONS, useActiveSection } from "@/components/site/nav";
+import { useActiveSection } from "@/components/site/nav";
+import { HEADER_SOLID_AFTER_VIEWPORT, SECTIONS } from "@/config/constants";
 import { sheetActions, usePlan } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
@@ -16,7 +17,7 @@ export function Header() {
 
   // Transparent over the hero photo, frosted once the page content scrolls under it
   useMotionValueEvent(scrollY, "change", (y) => {
-    setOverHero(y < window.innerHeight * 0.75);
+    setOverHero(y < window.innerHeight * HEADER_SOLID_AFTER_VIEWPORT);
   });
 
   return (

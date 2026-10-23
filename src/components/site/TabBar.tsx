@@ -1,16 +1,23 @@
 "use client";
 
-import { Compass, ListChecks, MapTrifold, SunHorizon } from "@phosphor-icons/react";
+import { Compass, ListChecks, MapTrifold, SunHorizon, type Icon } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useActiveSection } from "@/components/site/nav";
+import { SECTIONS, TAB_BAR_SECTIONS, type SectionId } from "@/config/constants";
 import { sheetActions, usePlan, useSheet } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
-const TABS = [
-  { id: "light", label: "Light", Icon: SunHorizon },
-  { id: "explore", label: "Explore", Icon: Compass },
-  { id: "map", label: "Map", Icon: MapTrifold },
-] as const;
+const TAB_ICONS: Partial<Record<SectionId, Icon>> = {
+  light: SunHorizon,
+  explore: Compass,
+  map: MapTrifold,
+};
+
+const TABS = TAB_BAR_SECTIONS.map((id) => ({
+  id,
+  label: SECTIONS.find((section) => section.id === id)?.label ?? id,
+  Icon: TAB_ICONS[id] ?? Compass,
+}));
 
 /** Floating thumb-zone navigation for phones and tablets. Hidden from lg upwards. */
 export function TabBar() {

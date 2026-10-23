@@ -1,6 +1,12 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import {
+  CLOCK_TICK_MS,
+  PLAN_STORAGE_KEY,
+  THEME_STORAGE_KEY,
+  TOAST_DURATION_MS,
+} from "@/config/constants";
 
 /**
  * Tiny external stores shared across client islands. Each one reads on the client only
@@ -55,7 +61,7 @@ function subscribeClock(listener: Listener) {
   const unsubscribe = clock.subscribe(listener);
   if (!clockTimer) {
     clock.set(Date.now());
-    clockTimer = setInterval(() => clock.set(Date.now()), 30_000);
+    clockTimer = setInterval(() => clock.set(Date.now()), CLOCK_TICK_MS);
   }
   return () => {
     unsubscribe();
@@ -71,8 +77,6 @@ export function useNow(): Date | null {
 /* ---------- Theme ---------- */
 
 export type Theme = "light" | "dark";
-
-const THEME_KEY = "tajcity-theme";
 
 function subscribeTheme(listener: Listener) {
   const observer = new MutationObserver(listener);
@@ -91,7 +95,7 @@ export function useTheme(): Theme | null {
 export function setTheme(theme: Theme) {
   document.documentElement.dataset.theme = theme;
   try {
-    window.localStorage.setItem(THEME_KEY, theme);
+    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
   } catch {
     // Theme still applies for this visit
   }
@@ -99,7 +103,6 @@ export function setTheme(theme: Theme) {
 
 /* ---------- Plan (saved place ids, in visiting order) ---------- */
 
-const PLAN_KEY = "tajcity-plan-v2";
 const EMPTY_PLAN: string[] = [];
 const plan = createStore<string[]>(EMPTY_PLAN);
 let planLoaded = false;
@@ -108,11 +111,11 @@ function subscribePlan(listener: Listener) {
   const unsubscribe = plan.subscribe(listener);
   if (!planLoaded) {
     planLoaded = true;
-    plan.set(readStorage<string[]>(PLAN_KEY, EMPTY_PLAN));
+    plan.set(readStorage<string[]>(PLAN_STORAGE_KEY, EMPTY_PLAN));
   }
   const onStorage = (event: StorageEvent) => {
-    if (event.key === PLAN_KEY) {
-      plan.set(readStorage<string[]>(PLAN_KEY, EMPTY_PLAN));
+    if (event.key === PLAN_STORAGE_KEY) {
+      plan.set(readStorage<string[]>(PLAN_STORAGE_KEY, EMPTY_PLAN));
     }
   };
   window.addEventListener("storage", onStorage);
@@ -133,7 +136,7 @@ export function usePlan(): string[] {
 function commitPlan(next: string[]) {
   planLoaded = true;
   plan.set(next);
-  writeStorage(PLAN_KEY, next);
+  writeStorage(PLAN_STORAGE_KEY, next);
 }
 
 export const planActions = {
@@ -207,7 +210,7 @@ export function useToast(): Toast | null {
 export function showToast(message: string, action?: Toast["action"]) {
   clearTimeout(toastTimer);
   toast.set({ id: ++toastId, message, action });
-  toastTimer = setTimeout(() => toast.set(null), 5000);
+  toastTimer = setTimeout(() => toast.set(null), TOAST_DURATION_MS);
 }
 
 export function dismissToast() {

@@ -1,5 +1,6 @@
 "use client";
 
+import { DESKTOP_MEDIA_QUERY, TAJ_PLACE_ID } from "@/config/constants";
 import { CommonsImage } from "@/components/ui/CommonsImage";
 import { AddToPlanButton } from "@/components/ui/AddToPlanButton";
 import { shortHours, type Place } from "@/data/places";
@@ -45,7 +46,9 @@ export function PlaceCard({ place, featured, className }: PlaceCardProps) {
                 ? `${place.photo.pictured}, a dish served at ${place.name}`
                 : place.name
             }
-            sizes={featured ? "(min-width: 1024px) 60vw, 80vw" : "(min-width: 1024px) 30vw, 80vw"}
+            sizes={
+              featured ? `${DESKTOP_MEDIA_QUERY} 60vw, 80vw` : `${DESKTOP_MEDIA_QUERY} 30vw, 80vw`
+            }
             className="absolute inset-0 transition-transform duration-700 ease-out-expo group-hover:scale-[1.04]"
           />
         ) : (
@@ -66,7 +69,11 @@ export function PlaceCard({ place, featured, className }: PlaceCardProps) {
           </h3>
           <p className="mt-1 line-clamp-2 text-sm leading-snug text-ink-2">{place.tagline}</p>
           <p className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-xs text-ink-3">
-            <span>{place.distanceFromTaj.split(" (")[0]} from the Taj</span>
+            <span>
+              {place.id === TAJ_PLACE_ID
+                ? "Your starting point"
+                : `${place.distanceFromTaj.split(" (")[0]} from the Taj`}
+            </span>
             <span>{shortHours(place)}</span>
           </p>
         </div>

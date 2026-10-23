@@ -1,13 +1,14 @@
 "use client";
 
+import { MAP_LOAD_MARGIN, PLACE_KIND_LABEL, TAJ_PLACE_ID } from "@/config/constants";
 import { ArrowRight, CaretRight } from "@phosphor-icons/react";
 import { AnimatePresence, motion, useInView } from "motion/react";
 import dynamic from "next/dynamic";
 import { useMemo, useRef, useState } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import { DISTANCE_MATRIX } from "@/data/agraData";
-import { KIND_LABEL, PLACES, directionsUrl, distanceFromTajKm, type Place } from "@/data/places";
+import { ROUTES_FROM_TAJ } from "@/data/transit";
+import { PLACES, directionsUrl, distanceFromTajKm, type Place } from "@/data/places";
 import { sheetActions, useTheme } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
@@ -27,12 +28,8 @@ const ORDERED: Place[] = [...PLACES].sort((a, b) => distanceFromTajKm(a) - dista
 
 /** Road time from the Taj when we have it, otherwise the distance note from the place data. */
 function travelNote(place: Place): string {
-  const route = DISTANCE_MATRIX.find(
-    (row) =>
-      row.from === "Taj Mahal" &&
-      place.name.toLowerCase().startsWith(row.to.toLowerCase().split(" (")[0]),
-  );
-  if (place.id === "taj-mahal") return "Start here";
+  const route = ROUTES_FROM_TAJ.find((row) => row.toId === place.id);
+  if (place.id === TAJ_PLACE_ID) return "Start here";
   return route ? `${route.distance}, ${route.time}` : place.distanceFromTaj.split(" (")[0];
 }
 
@@ -42,7 +39,7 @@ export function MapSection() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
-  const isNear = useInView(frameRef, { once: true, margin: "600px 0px" });
+  const isNear = useInView(frameRef, { once: true, margin: MAP_LOAD_MARGIN });
 
   const visible = useMemo(
     () =>
@@ -182,7 +179,7 @@ export function MapSection() {
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[15px] font-semibold">{place.name}</span>
                       <span className="block truncate text-xs text-ink-3">
-                        {KIND_LABEL[place.kind]},{" "}
+                        {PLACE_KIND_LABEL[place.kind]},{" "}
                         <span className="font-mono">{travelNote(place)}</span>
                       </span>
                     </span>

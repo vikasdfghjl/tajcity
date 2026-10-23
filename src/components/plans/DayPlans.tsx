@@ -1,22 +1,17 @@
 "use client";
 
+import { PRESET_TAB_LABEL, THUMB_WIDTH } from "@/config/constants";
 import { ArrowUpRight, Lightbulb, ListChecks } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { photoUrl } from "@/components/ui/CommonsImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import { ITINERARY_PRESETS } from "@/data/agraData";
+import { ITINERARY_PRESETS } from "@/data/itineraries";
 import { getPlace } from "@/data/places";
 import { planActions, sheetActions, showToast, usePlan } from "@/lib/stores";
 
 type PresetId = string;
-
-const TAB_LABEL: Record<string, string> = {
-  "1-day-express": "One day",
-  "2-day-royal": "Two days",
-  "foodie-trail": "Food trail",
-};
 
 export function DayPlans() {
   const [presetId, setPresetId] = useState<PresetId>(ITINERARY_PRESETS[0].id);
@@ -51,7 +46,7 @@ export function DayPlans() {
           onChange={setPresetId}
           options={ITINERARY_PRESETS.map((item) => ({
             value: item.id,
-            label: TAB_LABEL[item.id] ?? item.badge,
+            label: PRESET_TAB_LABEL[item.id] ?? item.duration,
           }))}
           className="mb-10"
         />
@@ -130,7 +125,7 @@ export function DayPlans() {
                         {place?.photo && (
                           // oxlint-disable-next-line nextjs/no-img-element -- Commons thumbnail, see CommonsImage
                           <img
-                            src={photoUrl(place.photo, 330)}
+                            src={photoUrl(place.photo, THUMB_WIDTH)}
                             alt=""
                             loading="lazy"
                             className="hidden size-20 shrink-0 rounded-tile object-cover sm:block"

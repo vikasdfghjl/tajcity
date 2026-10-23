@@ -1,5 +1,16 @@
 "use client";
 
+import {
+  DEFAULT_SUN_ANCHORS,
+  DESKTOP_MEDIA_QUERY,
+  DIAL_END_HOUR,
+  DIAL_HOUR_LABELS,
+  DIAL_QUICK_JUMPS,
+  DIAL_START_HOUR,
+  DIAL_STEP_HOURS,
+  DIAL_TRACK_HEIGHT_PX,
+  TAJ_PLACE_ID,
+} from "@/config/constants";
 import { CheckCircle, Clock, DoorOpen, Lightbulb, Users } from "@phosphor-icons/react";
 import {
   AnimatePresence,
@@ -14,25 +25,14 @@ import { useEffect, useMemo, useState } from "react";
 import { CommonsImage } from "@/components/ui/CommonsImage";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getPlace } from "@/data/places";
-import {
-  CROWD_CURVE,
-  DEFAULT_ANCHORS,
-  DIAL_END,
-  DIAL_START,
-  QUICK_JUMPS,
-  gradeStops,
-  phaseAt,
-  type SunAnchors,
-} from "@/data/light";
+import { CROWD_CURVE, gradeStops, phaseAt, type SunAnchors } from "@/data/light";
 import { formatDecimalHour, getTajDay, istHour } from "@/lib/agra-time";
 import { useNow } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
-const TRACK_HEIGHT = 96;
-const SPAN = DIAL_END - DIAL_START;
-const HOUR_LABELS = [6, 9, 12, 15, 18, 21, 24];
+const SPAN = DIAL_END_HOUR - DIAL_START_HOUR;
 
-const toPercent = (hour: number) => ((hour - DIAL_START) / SPAN) * 100;
+const toPercent = (hour: number) => ((hour - DIAL_START_HOUR) / SPAN) * 100;
 
 function crowdAt(hour: number): number | null {
   for (let i = 0; i < CROWD_CURVE.length - 1; i++) {
@@ -85,7 +85,7 @@ function crowdPaths(): { line: string; area: string }[] {
 }
 
 const PATHS = crowdPaths();
-const DIAL_PHOTO = getPlace("taj-mahal")?.photo;
+const DIAL_PHOTO = getPlace(TAJ_PLACE_ID)?.photo;
 
 function anchorsFor(now: Date): SunAnchors {
   const today = getTajDay(now);
@@ -145,7 +145,7 @@ function DialMedia({
           <CommonsImage
             photo={DIAL_PHOTO}
             alt="The Taj Mahal, recoloured to match the chosen time of day"
-            sizes="(min-width: 1024px) 66vw, 100vw"
+            sizes={`${DESKTOP_MEDIA_QUERY} 66vw, 100vw`}
           />
         </motion.div>
       )}
@@ -207,10 +207,10 @@ function DialTrack({
   onChange: (hour: number) => void;
   valueText: string;
 }) {
-  const thumbX = useTransform(smooth, [DIAL_START, DIAL_END], ["0%", "100%"]);
+  const thumbX = useTransform(smooth, [DIAL_START_HOUR, DIAL_END_HOUR], ["0%", "100%"]);
   const markerY = useTransform(smooth, (h) => {
     const value = crowdAt(h);
-    return ((value === null ? 100 : curveY(value)) / 100) * TRACK_HEIGHT;
+    return ((value === null ? 100 : curveY(value)) / 100) * DIAL_TRACK_HEIGHT_PX;
   });
   const markerOpacity = useTransform(smooth, (h) => (crowdAt(h) === null ? 0 : 1));
 
@@ -233,7 +233,7 @@ function DialTrack({
 
   return (
     <div className="-mx-4 mt-6 overflow-x-clip px-4 select-none sm:-mx-6 sm:px-6">
-      <div className="relative" style={{ height: TRACK_HEIGHT }}>
+      <div className="relative" style={{ height: DIAL_TRACK_HEIGHT_PX }}>
         <svg
           viewBox="0 0 1000 100"
           preserveAspectRatio="none"
@@ -321,9 +321,9 @@ function DialTrack({
 
         <input
           type="range"
-          min={DIAL_START}
-          max={DIAL_END}
-          step={0.25}
+          min={DIAL_START_HOUR}
+          max={DIAL_END_HOUR}
+          step={DIAL_STEP_HOURS}
           value={hour}
           onChange={(event) => onChange(Number(event.target.value))}
           aria-label="Time of day at the Taj Mahal"
@@ -334,7 +334,7 @@ function DialTrack({
       </div>
 
       <div className="relative mt-11 h-4" aria-hidden="true">
-        {HOUR_LABELS.map((label) => (
+        {DIAL_HOUR_LABELS.map((label) => (
           <span
             key={label}
             className="absolute -translate-x-1/2 font-mono text-[11px] text-ink-3"
@@ -351,9 +351,9 @@ function DialTrack({
 export function LightDial() {
   const now = useNow();
   // Same Agra calendar day always gives the same anchors, so children keyed on them stay mounted
-  const anchors = now ? anchorsFor(now) : DEFAULT_ANCHORS;
+  const anchors = now ? anchorsFor(now) : DEFAULT_SUN_ANCHORS;
 
-  const [hour, setHour] = useState(DEFAULT_ANCHORS.sunrise + 0.25);
+  const [hour, setHour] = useState<number>(DEFAULT_SUN_ANCHORS.sunrise + DIAL_STEP_HOURS);
   const target = useMotionValue(hour);
   const smooth = useSpring(target, { stiffness: 170, damping: 26, mass: 0.6 });
 
@@ -366,12 +366,15 @@ export function LightDial() {
   const nowHour = useMemo(() => {
     if (!now) return null;
     const h = istHour(now);
-    const wrapped = h < DIAL_START ? h + 24 : h;
-    return wrapped <= DIAL_END ? wrapped : null;
+    const wrapped = h < DIAL_START_HOUR ? h + 24 : h;
+    return wrapped <= DIAL_END_HOUR ? wrapped : null;
   }, [now]);
 
   const snap = (value: number) =>
-    Math.min(DIAL_END, Math.max(DIAL_START, Math.round(value * 4) / 4));
+    Math.min(
+      DIAL_END_HOUR,
+      Math.max(DIAL_START_HOUR, Math.round(value / DIAL_STEP_HOURS) * DIAL_STEP_HOURS),
+    );
 
   return (
     <section id="light" aria-labelledby="light-title" className="scroll-mt-16 py-20 lg:py-32">
@@ -412,7 +415,7 @@ export function LightDial() {
                   Right now
                 </button>
               )}
-              {QUICK_JUMPS.map((jump) => (
+              {DIAL_QUICK_JUMPS.map((jump) => (
                 <button
                   key={jump.label}
                   type="button"

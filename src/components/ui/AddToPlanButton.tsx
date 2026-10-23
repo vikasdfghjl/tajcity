@@ -35,7 +35,7 @@ export function AddToPlanButton({ id, variant = "icon", className }: AddToPlanBu
         type="button"
         onClick={() => togglePlace(id, plan)}
         className={cn(
-          "flex min-h-12 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-semibold transition-[transform,background-color] active:scale-[0.98]",
+          "flex min-h-12 items-center justify-center gap-2 rounded-full px-4 text-[15px] font-semibold whitespace-nowrap transition-[transform,background-color] active:scale-[0.98]",
           isSaved ? "bg-accent-soft text-accent" : "bg-accent text-accent-ink",
           className,
         )}
