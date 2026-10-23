@@ -1,69 +1,182 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import React, { useEffect, useState, useSyncExternalStore } from "react";
+import { Header } from "@/components/Header";
+import { Hero } from "@/components/Hero";
+import { TajSimulator } from "@/components/TajSimulator";
+import { PlacesExplorer } from "@/components/PlacesExplorer";
+import { FoodExplorer } from "@/components/FoodExplorer";
+import { ArtisanCrafts } from "@/components/ArtisanCrafts";
+import { ItineraryBuilder } from "@/components/ItineraryBuilder";
+import { TipsAndFAQ } from "@/components/TipsAndFAQ";
+import { Footer } from "@/components/Footer";
+import { PlaceItem, MONUMENTS_DATA, FOOD_DATA } from "@/data/agraData";
+
+const subscribeTheme = (onStoreChange: () => void) => {
+  window.addEventListener("storage", onStoreChange);
+  return () => window.removeEventListener("storage", onStoreChange);
+};
+
+const getThemeSnapshot = (): "light" | "dark" => {
+  const saved = localStorage.getItem("tajcity-theme");
+  return saved === "dark" ? "dark" : "light";
+};
+
+const getServerThemeSnapshot = (): "light" | "dark" => "light";
 
 export default function Home() {
+  const [manualTheme, setManualTheme] = useState<"light" | "dark" | null>(null);
+
+  const storedTheme = useSyncExternalStore(
+    subscribeTheme,
+    getThemeSnapshot,
+    getServerThemeSnapshot,
+  );
+
+  const currentTheme = manualTheme ?? storedTheme;
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", currentTheme);
+  }, [currentTheme]);
+
+  const [searchQuery, setSearchQuery] = useState("");
+  // Prepopulate with Taj Mahal & Deviram Sweets for an instantly rewarding initial state
+  const [savedPlaces, setSavedPlaces] = useState<PlaceItem[]>([
+    MONUMENTS_DATA[0], // Taj Mahal
+    FOOD_DATA[1], // Deviram Sweets
+  ]);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleToggleTheme = () => {
+    const nextTheme = currentTheme === "light" ? "dark" : "light";
+    setManualTheme(nextTheme);
+    localStorage.setItem("tajcity-theme", nextTheme);
+    document.documentElement.setAttribute("data-theme", nextTheme);
+  };
+
+  const savedItemIds = savedPlaces.map((place) => place.id);
+
+  const handleToggleSaveItem = (place: PlaceItem) => {
+    setSavedPlaces((previousPlaces) => {
+      const alreadySaved = previousPlaces.some((item) => item.id === place.id);
+      if (alreadySaved) {
+        return previousPlaces.filter((item) => item.id !== place.id);
+      }
+      return [...previousPlaces, place];
+    });
+  };
+
+  const handleRemoveItem = (id: string) => {
+    setSavedPlaces((previousPlaces) => previousPlaces.filter((item) => item.id !== id));
+  };
+
+  const handleApplyPreset = (places: PlaceItem[]) => {
+    // Replace saved places with the preset and open drawer for instant feedback
+    setSavedPlaces(places);
+    setIsDrawerOpen(true);
+  };
+
+  const handleClearItems = () => {
+    setSavedPlaces([]);
+  };
+
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  const handleSelectQuickCategory = (category: "monument" | "food" | "craft" | "all") => {
+    if (category === "all") {
+      setSearchQuery("");
+    }
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "var(--bg-canvas)",
+      }}
+    >
+      <Header
+        savedItemCount={savedPlaces.length}
+        currentTheme={currentTheme}
+        onToggleTheme={handleToggleTheme}
+        onOpenItineraryDrawer={handleOpenDrawer}
+      />
+
+      <main style={{ flex: 1 }}>
+        <Hero
+          onSearchQueryChange={setSearchQuery}
+          onSelectQuickCategory={handleSelectQuickCategory}
         />
-        <div className={styles.intro}>
-          <h1>
-            To get started, edit the{" "}
-            <code className={styles.code}>page.tsx</code> file.
-          </h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        <TajSimulator />
+
+        <PlacesExplorer
+          searchQuery={searchQuery}
+          savedItemIds={savedItemIds}
+          onToggleSaveItem={handleToggleSaveItem}
+        />
+
+        <FoodExplorer
+          searchQuery={searchQuery}
+          savedItemIds={savedItemIds}
+          onToggleSaveItem={handleToggleSaveItem}
+        />
+
+        <ArtisanCrafts />
+
+        <ItineraryBuilder
+          savedItems={savedPlaces}
+          isDrawerOpen={isDrawerOpen}
+          onCloseDrawer={handleCloseDrawer}
+          onRemoveItem={handleRemoveItem}
+          onApplyPreset={handleApplyPreset}
+          onClearItems={handleClearItems}
+        />
+
+        <TipsAndFAQ />
       </main>
+
+      <Footer />
+
+      {/* Mobile Bottom Navigation Bar (Visible only on mobile screens) */}
+      <nav className="mobile-bottom-nav" aria-label="Mobile quick navigation">
+        <a href="#monuments" className="mobile-nav-item">
+          <span className="icon">🏛️</span>
+          <span>Monuments</span>
+        </a>
+        <a href="#food" className="mobile-nav-item">
+          <span className="icon">🍲</span>
+          <span>Food</span>
+        </a>
+        <a href="#simulator" className="mobile-nav-item">
+          <span className="icon">☀️</span>
+          <span>Light</span>
+        </a>
+        <button type="button" onClick={handleOpenDrawer} className="mobile-nav-item">
+          <span className="icon">🧭</span>
+          <span>Plan ({savedPlaces.length})</span>
+        </button>
+        <button
+          type="button"
+          onClick={handleToggleTheme}
+          className="mobile-nav-item"
+          aria-label="Toggle Theme"
+          suppressHydrationWarning
+        >
+          <span className="icon" suppressHydrationWarning>
+            {currentTheme === "light" ? "🌙" : "☀️"}
+          </span>
+          <span suppressHydrationWarning>{currentTheme === "light" ? "Dark" : "Light"}</span>
+        </button>
+      </nav>
     </div>
   );
 }
