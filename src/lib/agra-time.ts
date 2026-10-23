@@ -1,20 +1,26 @@
 import { getMoonIllumination, getTimes } from "suncalc";
-
-export const TAJ_COORDS = { lat: 27.1751, lng: 78.0421 } as const;
-
-const IST_OFFSET_MINUTES = 330;
-const MINUTE = 60_000;
-const DAY = 24 * 60 * MINUTE;
+import {
+  DAY_MS,
+  IST_OFFSET_MINUTES,
+  IST_TIME_ZONE,
+  MINUTE_MS,
+  MOON_SEARCH_STEP_MS,
+  MOON_SEARCH_WINDOW_MS,
+  NIGHT_VIEWING_NIGHTS_EACH_SIDE,
+  TAJ_CLOSED_WEEKDAY,
+  TAJ_COORDS,
+  TAJ_GATE_OFFSET_MINUTES,
+} from "@/config/constants";
 
 const timeFormatter = new Intl.DateTimeFormat("en-IN", {
-  timeZone: "Asia/Kolkata",
+  timeZone: IST_TIME_ZONE,
   hour: "2-digit",
   minute: "2-digit",
   hour12: false,
 });
 
 const dayFormatter = new Intl.DateTimeFormat("en-IN", {
-  timeZone: "Asia/Kolkata",
+  timeZone: IST_TIME_ZONE,
   weekday: "short",
   day: "numeric",
   month: "short",
@@ -32,7 +38,7 @@ export function formatISTDay(date: Date): string {
 
 /** Calendar parts of a moment as seen on a clock in Agra. */
 function istParts(date: Date) {
-  const shifted = new Date(date.getTime() + IST_OFFSET_MINUTES * MINUTE);
+  const shifted = new Date(date.getTime() + IST_OFFSET_MINUTES * MINUTE_MS);
   return {
     year: shifted.getUTCFullYear(),
     month: shifted.getUTCMonth(),
@@ -44,11 +50,11 @@ function istParts(date: Date) {
 /** 12:00 noon in Agra on the same Agra calendar day as `date`. */
 function istNoon(date: Date, dayOffset = 0): Date {
   const { year, month, day } = istParts(date);
-  return new Date(Date.UTC(year, month, day + dayOffset, 12) - IST_OFFSET_MINUTES * MINUTE);
+  return new Date(Date.UTC(year, month, day + dayOffset, 12) - IST_OFFSET_MINUTES * MINUTE_MS);
 }
 
 export function isFridayInAgra(date: Date): boolean {
-  return istParts(date).weekday === 5;
+  return istParts(date).weekday === TAJ_CLOSED_WEEKDAY;
 }
 
 export interface TajDay {
@@ -69,8 +75,8 @@ export function getTajDay(date: Date, dayOffset = 0): TajDay {
   return {
     sunrise: rise,
     sunset: set,
-    opens: new Date(rise.getTime() - 30 * MINUTE),
-    closes: new Date(set.getTime() - 30 * MINUTE),
+    opens: new Date(rise.getTime() - TAJ_GATE_OFFSET_MINUTES * MINUTE_MS),
+    closes: new Date(set.getTime() - TAJ_GATE_OFFSET_MINUTES * MINUTE_MS),
     isFriday: isFridayInAgra(noon),
   };
 }
@@ -100,7 +106,7 @@ export function getTajStatus(now: Date): TajStatus {
     return { kind: "opens-later", opens: today.opens };
   }
   if (now < today.closes) {
-    const minutesLeft = Math.round((today.closes.getTime() - now.getTime()) / MINUTE);
+    const minutesLeft = Math.round((today.closes.getTime() - now.getTime()) / MINUTE_MS);
     return { kind: "open", closes: today.closes, minutesLeft };
   }
   return { kind: "closed-tonight", nextOpen: nextOpeningAfter(now) };
@@ -129,12 +135,16 @@ export interface NightViewing {
  * except Fridays and the month of Ramadan (which we cannot compute, so we say so in the UI).
  */
 export function getNextNightViewing(now: Date): NightViewing {
-  const start = istNoon(now, -2).getTime();
+  const start = istNoon(now, -NIGHT_VIEWING_NIGHTS_EACH_SIDE).getTime();
   let fullMoon = new Date(start);
   let previousPhase = getMoonIllumination(new Date(start)).phase;
 
-  // Step through the next ~33 days in 2-hour steps and catch the moment the phase crosses 0.5
-  for (let t = start + 2 * 60 * MINUTE; t < start + 33 * DAY; t += 2 * 60 * MINUTE) {
+  // Step through the search window and catch the moment the phase crosses 0.5 (full moon)
+  for (
+    let t = start + MOON_SEARCH_STEP_MS;
+    t < start + MOON_SEARCH_WINDOW_MS;
+    t += MOON_SEARCH_STEP_MS
+  ) {
     const phase = getMoonIllumination(new Date(t)).phase;
     if (previousPhase < 0.5 && phase >= 0.5) {
       fullMoon = new Date(t);
@@ -143,14 +153,17 @@ export function getNextNightViewing(now: Date): NightViewing {
     previousPhase = phase;
   }
 
-  const nights = [-2, -1, 0, 1, 2]
+  const nights = Array.from(
+    { length: NIGHT_VIEWING_NIGHTS_EACH_SIDE * 2 + 1 },
+    (_, index) => index - NIGHT_VIEWING_NIGHTS_EACH_SIDE,
+  )
     .map((offset) => istNoon(fullMoon, offset))
     .filter((night) => !isFridayInAgra(night));
 
   const lastNight = nights[nights.length - 1];
   // If this window is already over, look for the next one
   if (lastNight && istNoon(now).getTime() > lastNight.getTime()) {
-    return getNextNightViewing(new Date(fullMoon.getTime() + 10 * DAY));
+    return getNextNightViewing(new Date(fullMoon.getTime() + 10 * DAY_MS));
   }
 
   const todayNoon = istNoon(now).getTime();
@@ -163,7 +176,7 @@ export function getNextNightViewing(now: Date): NightViewing {
 
 /** Decimal hour of the day in Agra, e.g. 6.5 for 06:30. */
 export function istHour(date: Date): number {
-  const shifted = new Date(date.getTime() + IST_OFFSET_MINUTES * MINUTE);
+  const shifted = new Date(date.getTime() + IST_OFFSET_MINUTES * MINUTE_MS);
   return shifted.getUTCHours() + shifted.getUTCMinutes() / 60;
 }
 

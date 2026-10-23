@@ -1,8 +1,6 @@
+import { COMMONS_WIDTHS, FALLBACK_IMAGE_WIDTH } from "@/config/constants";
 import { cn } from "@/lib/cn";
 import type { Photo } from "@/data/places";
-
-// Wikimedia Commons only serves these thumbnail widths; anything else returns an error
-const COMMONS_WIDTHS = [330, 500, 960, 1280, 1920];
 
 export function photoUrl(photo: Photo, width: number): string {
   const bucket =
@@ -33,7 +31,7 @@ export function CommonsImage({ photo, alt, sizes, className, priority }: Commons
   return (
     // oxlint-disable-next-line nextjs/no-img-element -- Commons CDN sizes, see note above
     <img
-      src={photoUrl(photo, 960)}
+      src={photoUrl(photo, FALLBACK_IMAGE_WIDTH)}
       srcSet={srcSet}
       sizes={sizes}
       alt={alt}

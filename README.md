@@ -42,9 +42,15 @@ light best, where should I eat, how far is everything, and what's my plan.
 src/
   app/            layout (fonts, no-flash theme script), page, design tokens
   components/     one folder per section, plus ui/ primitives and sheets/
-  data/           place content, coordinates and photo metadata, light-dial model
+  config/         constants.ts: every URL, key, timing, breakpoint and setting
+  data/           monuments, food, crafts, itineraries, transit, light-dial model,
+                  shared types, photo helpers and the sources each fact was checked against
   lib/            agra-time.ts (sun and moon maths in IST), stores.ts (external stores)
 ```
+
+Every place lists the sources its facts were checked against (the official Taj Mahal and
+Agra district sites, ASI ticketing, UNESCO, and established publications for food), and the
+detail sheet shows them.
 
 Shared client state (clock, theme, plan, open sheet, toasts) lives in small
 `useSyncExternalStore` stores rather than context, so server-rendered sections stay server

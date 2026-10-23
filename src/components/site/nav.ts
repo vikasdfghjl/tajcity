@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-export const SECTIONS = [
-  { id: "light", label: "Light" },
-  { id: "explore", label: "Explore" },
-  { id: "map", label: "Map" },
-  { id: "plans", label: "Day plans" },
-  { id: "essentials", label: "Essentials" },
-] as const;
-
-export type SectionId = (typeof SECTIONS)[number]["id"];
+import { ACTIVE_SECTION_ROOT_MARGIN, SECTIONS, type SectionId } from "@/config/constants";
 
 /** Which section sits in the middle band of the viewport, via IntersectionObserver. */
 export function useActiveSection(): SectionId | null {
@@ -25,7 +16,7 @@ export function useActiveSection(): SectionId | null {
           }
         }
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: ACTIVE_SECTION_ROOT_MARGIN },
     );
     SECTIONS.forEach(({ id }) => {
       const element = document.getElementById(id);
@@ -40,7 +31,7 @@ export function useActiveSection(): SectionId | null {
           setActive(null);
         }
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: ACTIVE_SECTION_ROOT_MARGIN },
     );
     if (hero) {
       heroObserver.observe(hero);

@@ -1,16 +1,7 @@
+import { HELPLINES, OFFICIAL_PORTALS } from "@/config/constants";
 import { ArrowUpRight, Phone } from "@phosphor-icons/react/ssr";
-import { HERO_PHOTO, PLACES, type Photo } from "@/data/places";
-
-const HELPLINES = [
-  { label: "Police and emergency", number: "112" },
-  { label: "UP Tourism helpline", number: "1363" },
-];
-
-const PORTALS = [
-  { label: "Archaeological Survey of India", href: "https://asi.nic.in" },
-  { label: "Uttar Pradesh Tourism", href: "https://www.uptourism.gov.in" },
-  { label: "IRCTC trains to Agra", href: "https://www.irctc.co.in" },
-];
+import { HERO_PHOTO } from "@/data/commons";
+import { PLACES, type Photo } from "@/data/places";
 
 const CREDITS: { subject: string; photo: Photo }[] = [
   { subject: "Taj Mahal at sunrise", photo: HERO_PHOTO },
@@ -60,7 +51,7 @@ export function Footer() {
           <div>
             <h2 className="text-sm font-semibold">Official sites</h2>
             <ul className="mt-4 space-y-3">
-              {PORTALS.map((portal) => (
+              {OFFICIAL_PORTALS.map((portal) => (
                 <li key={portal.href}>
                   <a
                     href={portal.href}

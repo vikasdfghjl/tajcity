@@ -1,5 +1,6 @@
 "use client";
 
+import { DESKTOP_MEDIA_QUERY } from "@/config/constants";
 import { X } from "@phosphor-icons/react";
 import { Drawer } from "vaul";
 import { sheetActions, useMediaQuery } from "@/lib/stores";
@@ -26,7 +27,7 @@ export function SheetFrame({
   children,
   footer,
 }: SheetFrameProps) {
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
+  const isDesktop = useMediaQuery(DESKTOP_MEDIA_QUERY);
 
   return (
     <Drawer.Root

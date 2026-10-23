@@ -1,6 +1,12 @@
 "use client";
 
 import {
+  DESKTOP_MEDIA_QUERY,
+  FACTS_CHECKED_ON,
+  PLACE_KIND_LABEL,
+  TAJ_PLACE_ID,
+} from "@/config/constants";
+import {
   ArrowSquareOut,
   Clock,
   CurrencyInr,
@@ -13,7 +19,7 @@ import { useState } from "react";
 import { SheetFrame } from "@/components/sheets/SheetFrame";
 import { AddToPlanButton } from "@/components/ui/AddToPlanButton";
 import { CommonsImage } from "@/components/ui/CommonsImage";
-import { KIND_LABEL, directionsUrl, getPlace, type Place } from "@/data/places";
+import { directionsUrl, getPlace, type Place } from "@/data/places";
 import { sheetActions, useSheet } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
@@ -47,9 +53,6 @@ function Fact({
 }
 
 function PlaceDetails({ place }: { place: Place }) {
-  const fee = place.entryFee
-    ? `Indian ${place.entryFee.indian.split(" (")[0]}, foreign ${place.entryFee.foreigner.split(" (")[0]}`
-    : place.priceRange;
   const closedOnFriday = place.closedOn?.includes("Friday");
 
   return (
@@ -64,7 +67,7 @@ function PlaceDetails({ place }: { place: Place }) {
                   ? `${place.photo.pictured}, served at ${place.name}`
                   : place.name
               }
-              sizes="(min-width: 1024px) 440px, 100vw"
+              sizes={`${DESKTOP_MEDIA_QUERY} 440px, 100vw`}
             />
           </div>
           <figcaption className="mt-2 px-1 text-xs text-ink-3">
@@ -88,18 +91,49 @@ function PlaceDetails({ place }: { place: Place }) {
         <Fact icon={<Clock size={14} weight="bold" />} label="Hours">
           {place.timings}
         </Fact>
-        <Fact
-          icon={<CurrencyInr size={14} weight="bold" />}
-          label={place.entryFee ? "Entry" : "Price"}
-        >
-          {fee}
-        </Fact>
-        <Fact icon={<MapPin size={14} weight="bold" />} label="From the Taj">
-          {place.distanceFromTaj}
-        </Fact>
         <Fact icon={<Sun size={14} weight="bold" />} label="Best time">
           {place.bestTime}
         </Fact>
+        {!place.entryFee && place.priceRange && (
+          <div className="col-span-2">
+            <Fact icon={<CurrencyInr size={14} weight="bold" />} label="Price">
+              {place.priceRange}
+            </Fact>
+          </div>
+        )}
+        {place.entryFee && (
+          <div className="col-span-2 rounded-tile bg-sunken p-3.5">
+            <dt className="flex items-center gap-1.5 text-xs font-medium text-ink-3">
+              <CurrencyInr size={14} weight="bold" />
+              Entry
+            </dt>
+            <dd className="mt-2">
+              <div className="grid grid-cols-3 gap-2 text-center">
+                {[
+                  ["Indian", place.entryFee.indian],
+                  ["SAARC, BIMSTEC", place.entryFee.saarc],
+                  ["Foreign", place.entryFee.foreigner],
+                ].map(([label, price]) => (
+                  <div key={label} className="rounded-[10px] bg-surface px-2 py-2">
+                    <p className="font-mono text-[15px] text-ink">{price}</p>
+                    <p className="mt-0.5 text-[11px] leading-tight text-ink-3">{label}</p>
+                  </div>
+                ))}
+              </div>
+              {place.entryFee.note && (
+                <p className="mt-2.5 text-xs leading-snug text-ink-2">{place.entryFee.note}</p>
+              )}
+            </dd>
+          </div>
+        )}
+        <div className="col-span-2">
+          <Fact icon={<MapPin size={14} weight="bold" />} label="Where">
+            {place.address}
+            {place.id !== TAJ_PLACE_ID && (
+              <span className="mt-1 block text-ink-3">{place.distanceFromTaj} from the Taj</span>
+            )}
+          </Fact>
+        </div>
         {place.closedOn && (
           <div className="col-span-2">
             <Fact
@@ -130,6 +164,28 @@ function PlaceDetails({ place }: { place: Place }) {
           </li>
         ))}
       </ul>
+
+      <div className="mt-8 border-t border-line pt-5">
+        <h3 className="text-xs font-semibold text-ink-2">
+          Facts checked {FACTS_CHECKED_ON} against
+        </h3>
+        <ul className="mt-2 space-y-1.5">
+          {place.sources.map((source) => (
+            <li key={source.url}>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-ink-3 underline decoration-line underline-offset-2 hover:text-ink"
+              >
+                {source.label}
+                <ArrowSquareOut size={12} aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-ink-3">Prices and hours change. Confirm on the day.</p>
+      </div>
 
       {place.approximate && (
         <p className="mt-6 text-xs text-ink-3">
@@ -162,7 +218,7 @@ export function PlaceSheet() {
               {place.hindiName}
             </span>
             <span>
-              {KIND_LABEL[place.kind]}. {place.tagline}
+              {PLACE_KIND_LABEL[place.kind]}. {place.tagline}
             </span>
           </span>
         ) : null
@@ -175,7 +231,7 @@ export function PlaceSheet() {
               href={directionsUrl(place)}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex min-h-12 items-center gap-2 rounded-full border border-line px-5 text-[15px] font-semibold transition-colors hover:border-ink-3"
+              className="inline-flex min-h-12 items-center gap-1.5 rounded-full border border-line px-4 text-[15px] whitespace-nowrap font-semibold transition-colors hover:border-ink-3"
             >
               <NavigationArrow size={18} weight="bold" />
               Directions
