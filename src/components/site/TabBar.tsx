@@ -28,7 +28,7 @@ export function TabBar() {
   return (
     <nav
       aria-label="Quick navigation"
-      className="fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 lg:hidden"
+      className="fixed right-[max(0.75rem,env(safe-area-inset-right))] bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-[max(0.75rem,env(safe-area-inset-left))] z-40 lg:hidden"
     >
       <div className="glass mx-auto flex h-16 max-w-md items-center justify-between rounded-full border border-line p-1.5 shadow-card">
         {TABS.map(({ id, label, Icon }) => {

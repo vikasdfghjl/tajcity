@@ -386,7 +386,7 @@ export function LightDial() {
         />
 
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
-          <div className="lg:col-span-8">
+          <div className="min-w-0 lg:col-span-8">
             <DialMedia
               key={`${anchors.sunrise}-${anchors.sunset}`}
               hour={hour}
@@ -431,7 +431,7 @@ export function LightDial() {
             </p>
           </div>
 
-          <div className="lg:col-span-4">
+          <div className="min-w-0 lg:col-span-4">
             <div className="lg:sticky lg:top-24">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div

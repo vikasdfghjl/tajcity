@@ -14,7 +14,7 @@ export function Footer() {
   return (
     <footer className="border-t border-line pt-16 pb-36 lg:pb-16">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-4 sm:px-6 lg:grid-cols-12">
-        <div className="lg:col-span-5">
+        <div className="min-w-0 lg:col-span-5">
           <p className="flex items-baseline gap-3">
             <span className="text-4xl font-semibold tracking-[-0.04em]">Taj City</span>
             <span lang="hi" className="font-deva text-2xl text-ink-3">
@@ -27,7 +27,7 @@ export function Footer() {
           </p>
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-3">
+        <div className="grid min-w-0 gap-10 sm:grid-cols-2 lg:col-span-7 lg:grid-cols-3">
           <div>
             <h2 className="text-sm font-semibold">If you need help</h2>
             <ul className="mt-4 space-y-2">

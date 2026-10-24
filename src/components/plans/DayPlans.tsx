@@ -60,7 +60,7 @@ export function DayPlans() {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="grid gap-10 lg:grid-cols-12 lg:gap-16"
           >
-            <div className="lg:col-span-4">
+            <div className="min-w-0 lg:col-span-4">
               <div className="lg:sticky lg:top-24">
                 <h3 className="text-[1.75rem] leading-tight font-semibold">{preset.title}</h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{preset.summary}</p>
@@ -91,7 +91,7 @@ export function DayPlans() {
               </div>
             </div>
 
-            <ol className="relative lg:col-span-8">
+            <ol className="relative min-w-0 lg:col-span-8">
               <span
                 aria-hidden="true"
                 className="absolute top-3 bottom-3 left-[4.75rem] w-px bg-line sm:left-[5.75rem]"

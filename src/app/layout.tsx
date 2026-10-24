@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
 import { Providers } from "@/components/Providers";
-import { THEME_COLOR, THEME_STORAGE_KEY } from "@/config/constants";
+import {
+  DARK_SCHEME_QUERY,
+  THEME_COLOR,
+  THEME_COLOR_META_ID,
+  THEME_STORAGE_KEY,
+} from "@/config/constants";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"], display: "swap" });
@@ -35,14 +40,12 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: THEME_COLOR.light },
-    { media: "(prefers-color-scheme: dark)", color: THEME_COLOR.dark },
-  ],
+  // No themeColor here: Next's media-keyed metas only follow the system, so the theme script
+  // owns a single theme-color meta that also follows a manual pick
 };
 
 // Runs before first paint so a stored or system dark theme never flashes light
-const themeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.dataset.theme=t}catch(e){}})()`;
+const themeScript = `(function(){try{var t=localStorage.getItem(${JSON.stringify(THEME_STORAGE_KEY)});if(t!=="light"&&t!=="dark"){t=matchMedia(${JSON.stringify(DARK_SCHEME_QUERY)}).matches?"dark":"light"}document.documentElement.dataset.theme=t;var m=document.createElement("meta");m.id=${JSON.stringify(THEME_COLOR_META_ID)};m.name="theme-color";m.content=${JSON.stringify(THEME_COLOR)}[t];document.head.append(m)}catch(e){}})()`;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
