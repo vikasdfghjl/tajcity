@@ -1,6 +1,7 @@
 import { Dining } from "@/components/dining/Dining";
 import { Essentials } from "@/components/essentials/Essentials";
 import { Explore } from "@/components/explore/Explore";
+import { VisitorGuide } from "@/components/guide/VisitorGuide";
 import { Hero } from "@/components/hero/Hero";
 import { LightDial } from "@/components/light/LightDial";
 import { MapSection } from "@/components/map/MapSection";
@@ -30,6 +31,7 @@ export default function Home() {
         <MapSection />
         <DayPlans />
         <Essentials />
+        <VisitorGuide />
       </main>
       <Footer />
       <TabBar />

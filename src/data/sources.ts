@@ -176,6 +176,62 @@ export const SOURCES = {
     label: "TripXL: best food in Agra",
     url: "https://tripxl.com/blog/best-food-in-agra/",
   },
+  tajTimeLimit2019: {
+    label: "Business Today: three-hour limit at the Taj (June 2019)",
+    url: "https://www.businesstoday.in/current/economy-politics/pay-fine-spend-more-3-hours-taj-mahal/story/355420.html",
+  },
+  wikiAgraCantt: {
+    label: "Wikipedia: Agra Cantonment railway station",
+    url: "https://en.wikipedia.org/wiki/Agra_Cantonment_railway_station",
+  },
+  wikiGatimaan: {
+    label: "Wikipedia: Gatimaan Express",
+    url: "https://en.wikipedia.org/wiki/Gatimaan_Express",
+  },
+  wikiAgraAirport: {
+    label: "Wikipedia: Agra Airport",
+    url: "https://en.wikipedia.org/wiki/Agra_Airport",
+  },
+  wikiYamunaExpressway: {
+    label: "Wikipedia: Yamuna Expressway",
+    url: "https://en.wikipedia.org/wiki/Yamuna_Expressway",
+  },
+  uberAgra: {
+    label: "Uber: getting around Agra (official)",
+    url: "https://www.uber.com/global/en/r/cities/agra-uttar-pradesh-in/",
+  },
+  goAsiaAgraTransport: {
+    label: "GoAsia: getting around Agra (October 2026)",
+    url: "https://goasia.cc/en/india/agra-to-agra",
+  },
+  smarterTravelAgra: {
+    label: "SmarterTravel: Agra warnings and dangers",
+    url: "https://www.smartertravel.com/tips-agra-warnings-dangers-stay-safe/",
+  },
+  tajScamsGuide: {
+    label: "Taj Mahal Day Tour: common Taj Mahal scams",
+    url: "https://www.tajmahaldaytour.net/blog/taj-mahal-travel-scams/",
+  },
+  queueSkipScam: {
+    label: "The CSR Journal: queue-skipping scam reported at the Taj",
+    url: "https://thecsrjournal.in/irish-couple-reports-scam-over-taj-mahal-queue-skipping-fees",
+  },
+  tajSecurityPolice: {
+    label: "Asianet: Taj Security Police help a visitor at the West Gate",
+    url: "https://newsable.asianetnews.com/india/agra-constable-helps-foreign-tourist-drape-saree-at-taj-mahal-video-articleshow-mmusxz2",
+  },
+  wikiClimateAgra: {
+    label: "Wikipedia: Climate of Agra (IMD normals 1991–2020)",
+    url: "https://en.wikipedia.org/wiki/Climate_of_Agra",
+  },
+  wionTajFog: {
+    label: "WION: winter fog hides the Taj (December 2023)",
+    url: "https://www.wionews.com/india-news/india-tourists-left-disappointed-at-iconic-as-winter-fog-shrouds-iconic-taj-mahal-673948",
+  },
+  bestTimeTaj: {
+    label: "Finding Our Adventure: best time to visit the Taj, month by month",
+    url: "https://www.findingouradventure.com/travel-diaries/best-time-to-visit-the-taj-mahal",
+  },
   agraFootwear: {
     label: "FashionUnited: Agra's footwear industry",
     url: "https://fashionunited.in/news/fashion/locally-made-leather-footwear-to-cost-less/2015030911354",

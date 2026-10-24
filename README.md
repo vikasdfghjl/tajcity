@@ -19,6 +19,9 @@ light best, where should I eat, how far is everything, and what's my plan.
 - **Eat.** Sixteen restaurants and cafés filtered by meal (breakfast, brunch, lunch, café,
   dinner), opening on whichever meal is on now in Agra. Pure-veg and Taj-view toggles, price
   levels, and a strip showing which meals each place serves. Closest to the Taj first.
+- **Visitor guide.** The questions first-timers ask, by topic: getting here and around, touts
+  and scams, guides, the gates and facilities at the Taj, and the weather, with a month-by-month
+  climate strip (IMD normals) that opens on the current month. Every answer links its sources.
 - **Map.** MapLibre with OpenFreeMap tiles (free, no key), lazy-loaded on approach, themed for
   light and dark, with numbered pins synced to a distance-ordered list.
 - **My day.** Save stops from anywhere, drag to reorder, open the whole route in Google Maps in
@@ -46,7 +49,7 @@ src/
   app/            layout (fonts, no-flash theme script), page, design tokens
   components/     one folder per section, plus ui/ primitives and sheets/
   config/         constants.ts: every URL, key, timing, breakpoint and setting
-  data/           monuments, food, crafts, dining, itineraries, transit, light-dial model,
+  data/           monuments, food, crafts, dining, guide, itineraries, transit, light-dial model,
                   shared types, photo helpers and the sources each fact was checked against
   lib/            agra-time.ts (sun and moon maths in IST), stores.ts (external stores)
 ```
