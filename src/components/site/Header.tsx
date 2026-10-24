@@ -23,7 +23,8 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-40 transition-[background-color,color,box-shadow] duration-500",
+        // Insets keep the logo and toggle clear of the notch when the page runs edge to edge
+        "fixed inset-x-0 top-0 z-40 pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] transition-[background-color,color,box-shadow] duration-500",
         overHero ? "text-white" : "glass text-ink shadow-[0_1px_0_var(--line)]",
       )}
     >

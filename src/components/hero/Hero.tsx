@@ -20,7 +20,7 @@ export function Hero() {
       </div>
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgb(8_10_18/0.55)_0%,rgb(8_10_18/0.05)_30%,rgb(8_10_18/0.25)_55%,rgb(8_10_18/0.88)_100%)]" />
 
-      <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col justify-between gap-10 px-4 pt-20 pb-28 sm:px-6 lg:grid lg:grid-cols-12 lg:items-end lg:pt-24 lg:pb-14">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-1 flex-col justify-between gap-10 px-4 pt-[calc(5rem+env(safe-area-inset-top))] pb-28 sm:px-6 lg:grid lg:grid-cols-12 lg:items-end lg:pt-[calc(6rem+env(safe-area-inset-top))] lg:pb-14">
         <div
           className="animate-rise lg:order-last lg:col-span-4 lg:col-start-9"
           style={{ animationDelay: "500ms" }}

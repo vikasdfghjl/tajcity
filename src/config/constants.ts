@@ -61,6 +61,11 @@ export const PLAN_STORAGE_KEY = "tajcity-plan-v2";
 /** Browser chrome colours; keep in sync with --bg in globals.css. */
 export const THEME_COLOR = { light: "#f2f3ef", dark: "#0b0e15" } as const;
 
+export const DARK_SCHEME_QUERY = "(prefers-color-scheme: dark)";
+
+/** The single theme-color meta, owned by the theme script so a manual pick reaches the browser chrome. */
+export const THEME_COLOR_META_ID = "theme-color";
+
 /* ---------- Layout ---------- */
 
 /** Matches Tailwind's `lg` breakpoint, where sheets become side panels and the tab bar hides. */

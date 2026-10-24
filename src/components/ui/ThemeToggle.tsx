@@ -1,9 +1,11 @@
 "use client";
 
 import { Moon, Sun } from "@phosphor-icons/react";
-import { AnimatePresence, motion } from "motion/react";
 import { setTheme, useTheme } from "@/lib/stores";
 import { cn } from "@/lib/cn";
+
+const ICON_CLASS =
+  "col-start-1 row-start-1 transition-[translate,rotate,opacity] duration-500 ease-out-expo";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const theme = useTheme();
@@ -15,22 +17,26 @@ export function ThemeToggle({ className }: { className?: string }) {
       onClick={() => setTheme(next)}
       aria-label={theme ? `Switch to ${next} theme` : "Switch theme"}
       className={cn(
-        "relative grid size-10 place-items-center overflow-hidden rounded-full transition-transform active:scale-95",
+        "relative grid size-11 place-items-center overflow-hidden rounded-full transition-transform active:scale-95",
         className,
       )}
     >
-      <AnimatePresence initial={false} mode="popLayout">
-        <motion.span
-          key={theme ?? "unknown"}
-          initial={{ y: 18, opacity: 0, rotate: -40 }}
-          animate={{ y: 0, opacity: 1, rotate: 0 }}
-          exit={{ y: -18, opacity: 0, rotate: 40 }}
-          transition={{ type: "spring", stiffness: 380, damping: 26 }}
-          className="grid place-items-center"
-        >
-          {theme === "dark" ? <Sun size={20} weight="bold" /> : <Moon size={20} weight="bold" />}
-        </motion.span>
-      </AnimatePresence>
+      {/* Both icons are in the first paint and the dark variant picks one, so nothing swaps on hydration */}
+      <Moon
+        size={20}
+        weight="bold"
+        aria-hidden="true"
+        className={cn(ICON_CLASS, "dark:-translate-y-[18px] dark:rotate-[40deg] dark:opacity-0")}
+      />
+      <Sun
+        size={20}
+        weight="bold"
+        aria-hidden="true"
+        className={cn(
+          ICON_CLASS,
+          "translate-y-[18px] -rotate-[40deg] opacity-0 dark:translate-y-0 dark:rotate-0 dark:opacity-100",
+        )}
+      />
     </button>
   );
 }

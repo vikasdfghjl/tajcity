@@ -3,7 +3,10 @@
 import { useSyncExternalStore } from "react";
 import {
   CLOCK_TICK_MS,
+  DARK_SCHEME_QUERY,
   PLAN_STORAGE_KEY,
+  THEME_COLOR,
+  THEME_COLOR_META_ID,
   THEME_STORAGE_KEY,
   TOAST_DURATION_MS,
 } from "@/config/constants";
@@ -78,10 +81,46 @@ export function useNow(): Date | null {
 
 export type Theme = "light" | "dark";
 
+function systemTheme(): Theme {
+  return window.matchMedia(DARK_SCHEME_QUERY).matches ? "dark" : "light";
+}
+
+function hasStoredTheme(): boolean {
+  try {
+    return window.localStorage.getItem(THEME_STORAGE_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+function applyTheme(theme: Theme) {
+  document.documentElement.dataset.theme = theme;
+  let meta = document.getElementById(THEME_COLOR_META_ID);
+  if (!meta) {
+    meta = Object.assign(document.createElement("meta"), {
+      id: THEME_COLOR_META_ID,
+      name: "theme-color",
+    });
+    document.head.append(meta);
+  }
+  meta.setAttribute("content", THEME_COLOR[theme]);
+}
+
 function subscribeTheme(listener: Listener) {
   const observer = new MutationObserver(listener);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  return () => observer.disconnect();
+  // Follow the system theme until the visitor picks one of their own
+  const scheme = window.matchMedia(DARK_SCHEME_QUERY);
+  const onSchemeChange = () => {
+    if (!hasStoredTheme()) {
+      applyTheme(systemTheme());
+    }
+  };
+  scheme.addEventListener("change", onSchemeChange);
+  return () => {
+    observer.disconnect();
+    scheme.removeEventListener("change", onSchemeChange);
+  };
 }
 
 function getTheme(): Theme {
@@ -93,9 +132,14 @@ export function useTheme(): Theme | null {
 }
 
 export function setTheme(theme: Theme) {
-  document.documentElement.dataset.theme = theme;
+  applyTheme(theme);
   try {
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    // Picking the system's own theme hands control back to the system
+    if (theme === systemTheme()) {
+      window.localStorage.removeItem(THEME_STORAGE_KEY);
+    } else {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    }
   } catch {
     // Theme still applies for this visit
   }
