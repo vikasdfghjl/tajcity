@@ -96,6 +96,86 @@ export const SOURCES = {
     label: "ThreeBestRated: Mama Franky House, Agra",
     url: "https://threebestrated.in/mama-chicken-mama-franky-house-non-veg-restuarants-agra-up-AZ8pA",
   },
+  desiVibesListing: {
+    label: "EazyDiner: Desi Vibes, Tajganj",
+    url: "https://www.eazydiner.com/agra/desi-vibes-tajganj-agra-708291",
+  },
+  desiVibesGuide: {
+    label: "EazyDiner: Desi Vibes Agra, menu and ambience",
+    url: "https://www.eazydiner.com/food-trends/desi-vibes-agra-why-its-one-of-the-best-restaurants-and-places-to-eat-in-agra",
+  },
+  udupiBrindavanPearl: {
+    label: "Pearl: Udupi Brindavan, Agra",
+    url: "https://joinpearl.co/restaurants/agra/udupi-brindavan",
+  },
+  udupiBrindavanListing: {
+    label: "ThreeBestRated: Udupi Brindavan, Agra",
+    url: "https://threebestrated.in/udupi-brindavan-pure-vegetarian-restuarants-agra-up-QGljd",
+  },
+  naivedyamListing: {
+    label: "EazyDiner: Naivedyam, Fatehabad Road",
+    url: "https://www.eazydiner.com/agra/naivedyam-fatehabad-road-agra-704563",
+  },
+  deepeeListing: {
+    label: "Wanderlog: Deepee Restaurant (formerly Dasaprakash)",
+    url: "https://wanderlog.com/place/details/3051133/deepee-restaurant-formerly-dasaprakash",
+  },
+  palmBurjListing: {
+    label: "Wanderlog: The Palm Burj, Agra",
+    url: "https://wanderlog.com/place/details/2945336/the-palm-burj-best-rooftop--best-lounge--best-club--best-pub--best-restaurant-in-agra",
+  },
+  tajnumaListing: {
+    label: "magicpin: Tajnuma, Tajganj",
+    url: "https://magicpin.in/Agra/Tajganj/Restaurant/Tajnuma/store/20878ac",
+  },
+  esphahanOfficial: {
+    label: "The Oberoi Amarvilas: Esphahan (official)",
+    url: "https://www.oberoihotels.com/hotels-in-agra-amarvilas-resort/dining/esphahan/",
+  },
+  bellevueOfficial: {
+    label: "The Oberoi Amarvilas: Bellevue (official)",
+    url: "https://www.oberoihotels.com/hotels-in-agra-amarvilas-resort/dining/bellevue/",
+  },
+  peshawriListing: {
+    label: "EazyDiner: Peshawri, ITC Mughal",
+    url: "https://www.eazydiner.com/agra/peshawri-itc-mughal-tajganj-668426",
+  },
+  peshawriDishes: {
+    label: "Restaurants for Kings: Peshawri, Agra",
+    url: "https://restaurantsforkings.com/city/agra/peshawri",
+  },
+  soCityAgraBreakfast: {
+    label: "So City: breakfast spots in Agra",
+    url: "https://so.city/agra/article/from-pancakes-to-paranthas-9-best-breakfast-spots-in-agra-to-kickstart-your-day",
+  },
+  lonelyPlanetAgraEating: {
+    label: "Lonely Planet: restaurants in Agra",
+    url: "https://www.lonelyplanet.com/india/uttar-pradesh/agra/restaurants",
+  },
+  shankaraHappyCow: {
+    label: "HappyCow: Shankara Vegis, Agra",
+    url: "https://www.happycow.net/reviews/shankara-vegis-agra-32289",
+  },
+  joneysListing: {
+    label: "Trip.com: Joney's Place, Tajganj",
+    url: "https://au.trip.com/restaurant/india/agra/detail/joney-s-place-501931",
+  },
+  sugarNThymeListing: {
+    label: "Yappe: Sugar N Thyme, Agra",
+    url: "https://yappe.in/uttar-pradesh/agra/sugar-n-thyme/29608",
+  },
+  thirdWaveFatehabad: {
+    label: "Third Wave Coffee: Fatehabad Road store (official)",
+    url: "https://stores.thirdwavecoffeeroasters.com/store-pages/third-wave-coffee-fatehabad-agra",
+  },
+  saltCafeListing: {
+    label: "Wanderlog: The Salt Cafe, Agra",
+    url: "https://wanderlog.com/place/details/108294/the-salt-cafe",
+  },
+  tripxlAgraFood: {
+    label: "TripXL: best food in Agra",
+    url: "https://tripxl.com/blog/best-food-in-agra/",
+  },
   agraFootwear: {
     label: "FashionUnited: Agra's footwear industry",
     url: "https://fashionunited.in/news/fashion/locally-made-leather-footwear-to-cost-less/2015030911354",

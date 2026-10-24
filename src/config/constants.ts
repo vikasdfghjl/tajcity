@@ -76,6 +76,7 @@ export const DESKTOP_MEDIA_QUERY = "(min-width: 1024px)";
 export const SECTIONS = [
   { id: "light", label: "Light" },
   { id: "explore", label: "Explore" },
+  { id: "eat", label: "Eat" },
   { id: "map", label: "Map" },
   { id: "plans", label: "Day plans" },
   { id: "essentials", label: "Essentials" },
@@ -84,7 +85,7 @@ export const SECTIONS = [
 export type SectionId = (typeof SECTIONS)[number]["id"];
 
 /** Sections that get a tab in the mobile tab bar (the plan button is added separately). */
-export const TAB_BAR_SECTIONS: readonly SectionId[] = ["light", "explore", "map"];
+export const TAB_BAR_SECTIONS: readonly SectionId[] = ["light", "explore", "eat", "map"];
 
 /** IntersectionObserver band that decides which section counts as "current". */
 export const ACTIVE_SECTION_ROOT_MARGIN = "-45% 0px -50% 0px";
@@ -98,6 +99,7 @@ export const PLACE_KIND_LABEL = {
   monument: "Monument",
   food: "Food",
   craft: "Craft",
+  dining: "Restaurant",
 } as const;
 
 export const EXPLORE_TABS = [
@@ -114,6 +116,30 @@ export const PRESET_TAB_LABEL: Record<string, string> = {
 
 /** Preset offered from the empty plan sheet. */
 export const STARTER_PRESET_ID = "1-day-express";
+
+/* ---------- Dining ---------- */
+
+/**
+ * Meal filters in day order. `from` is the IST hour each one becomes the default, so the
+ * section opens on whatever meal is next; before the first one it opens on breakfast.
+ */
+export const MEAL_TABS = [
+  { value: "breakfast", label: "Breakfast", from: 6 },
+  { value: "brunch", label: "Brunch", from: 10.5 },
+  { value: "lunch", label: "Lunch", from: 12 },
+  { value: "cafe", label: "Café", from: 15.5 },
+  { value: "dinner", label: "Dinner", from: 18.5 },
+] as const;
+
+/** Meal shown before the visitor's clock is known. */
+export const DEFAULT_MEAL = "lunch";
+
+export const PRICE_LEVEL_LABEL = {
+  1: "Budget",
+  2: "Mid-range",
+  3: "Upscale",
+  4: "Luxury",
+} as const;
 
 /* ---------- Images (Wikimedia Commons) ---------- */
 

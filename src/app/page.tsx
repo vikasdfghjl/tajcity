@@ -1,3 +1,4 @@
+import { Dining } from "@/components/dining/Dining";
 import { Essentials } from "@/components/essentials/Essentials";
 import { Explore } from "@/components/explore/Explore";
 import { Hero } from "@/components/hero/Hero";
@@ -25,6 +26,7 @@ export default function Home() {
         <Hero />
         <LightDial />
         <Explore />
+        <Dining />
         <MapSection />
         <DayPlans />
         <Essentials />

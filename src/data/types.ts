@@ -1,6 +1,20 @@
 /** Shared shapes for everything in src/data. */
 
-export type PlaceKind = "monument" | "food" | "craft";
+export type PlaceKind = "monument" | "food" | "craft" | "dining";
+
+export type Meal = "breakfast" | "brunch" | "lunch" | "cafe" | "dinner";
+
+/** Sit-down restaurants and cafés, filtered by meal in the dining section. */
+export interface DiningDetails {
+  meals: Meal[];
+  cuisine: string;
+  /** 1: under ₹600 for two, 2: up to ₹1,500, 3: up to ₹4,000, 4: hotel fine dining */
+  priceLevel: 1 | 2 | 3 | 4;
+  pureVeg: boolean;
+  rooftop: boolean;
+  /** Listings or reviews describe a view of the Taj from the tables */
+  tajView: boolean;
+}
 
 /** A reference a fact was checked against. */
 export interface Source {
@@ -60,6 +74,8 @@ export interface Place {
   /** Google Maps search text that lands on the exact place */
   mapsQuery: string;
   photo?: Photo;
+  /** Only on dining places */
+  dining?: DiningDetails;
   sources: Source[];
 }
 

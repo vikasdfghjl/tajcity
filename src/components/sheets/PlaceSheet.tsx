@@ -3,6 +3,7 @@
 import {
   DESKTOP_MEDIA_QUERY,
   FACTS_CHECKED_ON,
+  MEAL_TABS,
   PLACE_KIND_LABEL,
   TAJ_PLACE_ID,
 } from "@/config/constants";
@@ -10,6 +11,7 @@ import {
   ArrowSquareOut,
   Clock,
   CurrencyInr,
+  ForkKnife,
   Lightbulb,
   MapPin,
   NavigationArrow,
@@ -19,9 +21,23 @@ import { useState } from "react";
 import { SheetFrame } from "@/components/sheets/SheetFrame";
 import { AddToPlanButton } from "@/components/ui/AddToPlanButton";
 import { CommonsImage } from "@/components/ui/CommonsImage";
-import { directionsUrl, getPlace, type Place } from "@/data/places";
+import { directionsUrl, getPlace, type DiningDetails, type Place } from "@/data/places";
 import { sheetActions, useSheet } from "@/lib/stores";
 import { cn } from "@/lib/cn";
+
+/** "Breakfast, lunch, dinner. South Indian, pure veg, rooftop with a Taj view." */
+function diningSummary(dining: DiningDetails): string {
+  const meals = MEAL_TABS.filter((tab) => dining.meals.includes(tab.value))
+    .map((tab) => tab.label)
+    .join(", ");
+  const traits = [
+    dining.cuisine,
+    dining.pureVeg && !dining.cuisine.includes("vegetarian") && "pure veg",
+    dining.rooftop && (dining.tajView ? "rooftop with a Taj view" : "rooftop"),
+    !dining.rooftop && dining.tajView && "Taj view",
+  ].filter(Boolean);
+  return `${meals}. ${traits.join(", ")}.`;
+}
 
 function Fact({
   icon,
@@ -126,6 +142,13 @@ function PlaceDetails({ place }: { place: Place }) {
             </dd>
           </div>
         )}
+        {place.dining && (
+          <div className="col-span-2">
+            <Fact icon={<ForkKnife size={14} weight="bold" />} label="Serves">
+              {diningSummary(place.dining)}
+            </Fact>
+          </div>
+        )}
         <div className="col-span-2">
           <Fact icon={<MapPin size={14} weight="bold" />} label="Where">
             {place.address}
@@ -155,7 +178,7 @@ function PlaceDetails({ place }: { place: Place }) {
       </div>
 
       <h3 className="mt-7 text-sm font-semibold">
-        {place.kind === "food" ? "What to order" : "Don't miss"}
+        {place.kind === "food" || place.kind === "dining" ? "What to order" : "Don't miss"}
       </h3>
       <ul className="mt-3 flex flex-wrap gap-2">
         {place.mustTryOrSee.map((item) => (
