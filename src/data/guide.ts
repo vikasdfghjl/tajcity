@@ -191,8 +191,8 @@ export const GUIDE_TOPICS: GuideTopic[] = [
       {
         question: "Are there wheelchairs, first aid and water?",
         answer:
-          "Yes. Wheelchairs and a first aid box are kept at the ASI office inside the Taj, phone +91 562 233 0498. Water bottles are allowed in.",
-        sources: [SOURCES.tajRules],
+          "Yes. Wheelchairs are available at the entry gates, and wheelchairs and a first aid box are kept at the ASI office inside the Taj, phone +91 562 233 0498. Water bottles are allowed in.",
+        sources: [SOURCES.tajRules, SOURCES.agraDistrictTaj],
       },
       {
         question: "Can I take photos?",

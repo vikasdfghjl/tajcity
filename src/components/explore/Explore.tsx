@@ -5,37 +5,36 @@ import { MagnifyingGlass, X } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useDeferredValue, useState } from "react";
 import { PlaceCard } from "@/components/explore/PlaceCard";
+import { GuideAnswer } from "@/components/guide/GuideAnswer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
-import { PLACES, type Place, type PlaceKind } from "@/data/places";
+import { PLACES, type PlaceKind } from "@/data/places";
+import { search } from "@/lib/search";
 import { cn } from "@/lib/cn";
 
-function matches(place: Place, query: string): boolean {
-  const haystack = [
-    place.name,
-    place.tagline,
-    place.description,
-    ...place.tags,
-    ...place.mustTryOrSee,
-  ]
-    .join(" ")
-    .toLowerCase();
-  return query
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((word) => haystack.includes(word));
+/** Guide answers shown before "Show more", so places stay in view below them. */
+const INITIAL_ANSWERS = 3;
+
+function plural(count: number, word: string): string {
+  return `${count} ${word}${count === 1 ? "" : "s"}`;
 }
 
 export function Explore() {
   const [kind, setKind] = useState<PlaceKind>("monument");
   const [query, setQuery] = useState("");
+  const [allAnswers, setAllAnswers] = useState(false);
   const deferredQuery = useDeferredValue(query.trim());
   const isSearching = deferredQuery.length > 0;
 
-  const results = isSearching
-    ? PLACES.filter((place) => matches(place, deferredQuery))
-    : PLACES.filter((place) => place.kind === kind);
+  const searched = isSearching ? search(deferredQuery, PLACES) : null;
+  const results = searched ? searched.places : PLACES.filter((place) => place.kind === kind);
+  const answers = searched?.answers ?? [];
+  const shownAnswers = allAnswers ? answers : answers.slice(0, INITIAL_ANSWERS);
+
+  const updateQuery = (value: string) => {
+    setQuery(value);
+    setAllAnswers(false);
+  };
 
   // Six results get the asymmetric layout: one tall feature beside five supporting cards
   const useFeatureGrid = !isSearching && results.length === 6;
@@ -55,7 +54,7 @@ export function Explore() {
             value={kind}
             onChange={(value) => {
               setKind(value);
-              setQuery("");
+              updateQuery("");
             }}
             options={EXPLORE_TABS.map((option) => ({
               ...option,
@@ -66,7 +65,7 @@ export function Explore() {
 
           <div className="relative w-full sm:max-w-xs">
             <label htmlFor="explore-search" className="sr-only">
-              Search places and dishes
+              Search places, dishes and questions
             </label>
             <MagnifyingGlass
               size={18}
@@ -77,15 +76,15 @@ export function Explore() {
               id="explore-search"
               type="search"
               value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="Try petha, sunset, Akbar"
+              onChange={(event) => updateQuery(event.target.value)}
+              placeholder="Try petha, sunset, or a question"
               autoComplete="off"
               className="min-h-12 w-full rounded-full border border-line bg-surface pr-12 pl-11 text-[15px] text-ink placeholder:text-ink-3 focus:border-accent focus:outline-none [&::-webkit-search-cancel-button]:hidden"
             />
             {query && (
               <button
                 type="button"
-                onClick={() => setQuery("")}
+                onClick={() => updateQuery("")}
                 aria-label="Clear search"
                 className="absolute top-1/2 right-1.5 grid size-9 -translate-y-1/2 place-items-center rounded-full text-ink-3 hover:bg-sunken hover:text-ink"
               >
@@ -97,26 +96,55 @@ export function Explore() {
 
         {isSearching && (
           <p className="mb-5 font-mono text-sm text-ink-3" aria-live="polite">
-            {results.length} {results.length === 1 ? "match" : "matches"} for &ldquo;{deferredQuery}
-            &rdquo;
+            {plural(results.length, "place")}
+            {answers.length > 0 && ` and ${plural(answers.length, "answer")}`} for &ldquo;
+            {deferredQuery}&rdquo;
           </p>
         )}
 
-        {results.length === 0 ? (
-          <div className="rounded-card border border-dashed border-line px-6 py-16 text-center">
-            <p className="text-xl font-semibold">Nothing matches that yet</p>
-            <p className="mx-auto mt-2 max-w-sm text-ink-2">
-              Try a dish like jalebi or a place like Sikandra, or clear the search to browse by
-              category.
-            </p>
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              className="mt-6 min-h-11 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink"
-            >
-              Clear search
-            </button>
+        {answers.length > 0 && (
+          <div className="mb-10 max-w-3xl">
+            <h3 className="text-sm font-semibold text-ink-2">From the visitor guide</h3>
+            <div className="mt-2 border-t border-line">
+              {shownAnswers.map((match, index) => (
+                <GuideAnswer
+                  key={match.entry.question}
+                  entry={match.entry}
+                  eyebrow={match.topicLabel}
+                  open={index === 0 && results.length === 0}
+                />
+              ))}
+            </div>
+            {answers.length > INITIAL_ANSWERS && (
+              <button
+                type="button"
+                onClick={() => setAllAnswers(!allAnswers)}
+                aria-expanded={allAnswers}
+                className="mt-4 min-h-11 rounded-full border border-line px-5 text-sm font-semibold transition-colors hover:border-ink-3"
+              >
+                {allAnswers ? "Show fewer answers" : `Show all ${answers.length} answers`}
+              </button>
+            )}
           </div>
+        )}
+
+        {results.length === 0 ? (
+          answers.length === 0 && (
+            <div className="rounded-card border border-dashed border-line px-6 py-16 text-center">
+              <p className="text-xl font-semibold">Nothing matches that yet</p>
+              <p className="mx-auto mt-2 max-w-sm text-ink-2">
+                Try a dish like jalebi, a place like Sikandra, or a question like &ldquo;how do I
+                get a cab?&rdquo;
+              </p>
+              <button
+                type="button"
+                onClick={() => updateQuery("")}
+                className="mt-6 min-h-11 rounded-full bg-accent px-5 text-sm font-semibold text-accent-ink"
+              >
+                Clear search
+              </button>
+            </div>
+          )
         ) : (
           <AnimatePresence mode="wait" initial={false}>
             <motion.div

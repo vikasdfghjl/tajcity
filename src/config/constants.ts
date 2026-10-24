@@ -6,6 +6,23 @@
  * src/data, and values derived from that content stay next to the code that derives them.
  */
 
+/* ---------- Site ---------- */
+
+/** Public origin for absolute share URLs. Set NEXT_PUBLIC_SITE_URL when deploying. */
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+export const SITE_NAME = "Taj City";
+export const SITE_TITLE = "Taj City | Agra, timed right";
+export const SITE_DESCRIPTION =
+  "A mobile-first companion for Agra: live Taj Mahal opening status, sunrise and crowd timing, where to eat, a map of every stop and a day plan you can reorder and share.";
+/** One line for the share image. */
+export const SITE_DESCRIPTION_SHORT = "Live Taj status · the best hour · where to eat";
+
+/** Generated PNG icon sizes, served at /icon/<size> and listed in the web manifest. */
+export const APP_ICON_SIZES = [192, 512] as const;
+export const APPLE_ICON_SIZE = 180;
+export const SHARE_IMAGE_SIZE = { width: 1200, height: 630 };
+
 /* ---------- Time ---------- */
 
 export const MINUTE_MS = 60_000;
@@ -60,6 +77,14 @@ export const PLAN_STORAGE_KEY = "tajcity-plan-v2";
 
 /** Browser chrome colours; keep in sync with --bg in globals.css. */
 export const THEME_COLOR = { light: "#f2f3ef", dark: "#0b0e15" } as const;
+
+/** Colours for the generated icons and share image; keep in sync with globals.css. */
+export const BRAND_COLORS = {
+  accent: "#2b44a8",
+  marble: THEME_COLOR.light,
+  ink: "#12141a",
+  ink2: "#454a56",
+} as const;
 
 export const DARK_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 

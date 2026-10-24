@@ -64,7 +64,7 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
         title: "Sadar Bazaar: chaat, rolls and petha",
         activity:
           "Agra bhalla and basket chaat in Chaat Gali, a roll at Mama Franky, then petha to take home.",
-        tip: "Sadar Bazaar's shops close on Tuesdays.",
+        tip: "Sadar Bazaar's shops close on Tuesdays. For a sit-down dinner instead, the Eat section lists rooftops with a Taj view.",
       },
     ],
   },
@@ -74,7 +74,7 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
     duration: "Two full days",
     idealFor: "History lovers, photographers and anyone who wants a slower pace",
     summary:
-      "Day one as in the one-day plan. Day two adds Fatehpur Sikri, a Mughlai lunch, the Baby Taj and Akbar's tomb at Sikandra.",
+      "Day one as in the one-day plan. Day two starts with dosa, then adds Fatehpur Sikri, a Mughlai lunch, the Baby Taj and Akbar's tomb at Sikandra.",
     estimatedBudget: "Roughly ₹3,500 to ₹7,000 per person, including a cab for Fatehpur Sikri",
     stops: [
       {
@@ -85,7 +85,14 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
         tip: "Turn in early; day two starts with a drive.",
       },
       {
-        time: "Day 2, 08:00 - 12:30",
+        time: "Day 2, 08:00 - 08:45",
+        placeId: "udupi-brindavan",
+        title: "Dosa breakfast at Udupi Brindavan",
+        activity: "A pure-veg South Indian breakfast of butter masala dosa and idli.",
+        tip: "It opens at 8 AM, so have the cab collect you from here.",
+      },
+      {
+        time: "Day 2, 09:00 - 13:00",
         placeId: "fatehpur-sikri",
         title: "Fatehpur Sikri",
         activity:
@@ -93,7 +100,7 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
         tip: "Agree the round-trip cab fare, including waiting time, before you set off.",
       },
       {
-        time: "Day 2, 13:30 - 15:00",
+        time: "Day 2, 14:00 - 15:00",
         placeId: "pinch-of-spice",
         title: "Mughlai lunch at Pinch of Spice",
         activity: "Slow-cooked black dal, a lababdar curry and tandoori breads.",
@@ -122,8 +129,8 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
     duration: "Half a day to a full day",
     idealFor: "Food lovers who want Agra's classics in one go",
     summary:
-      "Bedai and jalebi for breakfast, a café lunch, an evening of chaat and rolls in Sadar Bazaar and petha to finish.",
-    estimatedBudget: "Roughly ₹600 to ₹1,200 per person for food",
+      "Bedai and jalebi for breakfast, ghee parathas, filter coffee, a café lunch, an evening of chaat and rolls in Sadar Bazaar and petha to finish.",
+    estimatedBudget: "Roughly ₹800 to ₹1,500 per person for food",
     stops: [
       {
         time: "08:00",
@@ -131,6 +138,20 @@ export const ITINERARY_PRESETS: ItineraryPreset[] = [
         title: "Breakfast: bedai and jalebi at Deviram",
         activity: "Spiced lentil puris with potato curry, then hot jalebi.",
         tip: "Come hungry; portions are generous.",
+      },
+      {
+        time: "09:30",
+        placeId: "ram-babu-paratha",
+        title: "Second breakfast: Ram Babu parathas",
+        activity: "Share one ghee-soaked methi-matar paratha with aloo sabzi and jhol.",
+        tip: "One between two is plenty after bedai.",
+      },
+      {
+        time: "11:30",
+        placeId: "naivedyam",
+        title: "Filter coffee at Naivedyam",
+        activity: "Strong South Indian filter coffee, and a dosa if you still have room.",
+        tip: "It opens at 10:30 AM and fills up at lunch, so come before noon.",
       },
       {
         time: "13:00",

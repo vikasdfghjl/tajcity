@@ -3,6 +3,10 @@ import { Geist, Geist_Mono, Tiro_Devanagari_Hindi } from "next/font/google";
 import { Providers } from "@/components/Providers";
 import {
   DARK_SCHEME_QUERY,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
   THEME_COLOR,
   THEME_COLOR_META_ID,
   THEME_STORAGE_KEY,
@@ -22,10 +26,23 @@ const tiro = Tiro_Devanagari_Hindi({
   display: "swap",
 });
 
+// The share image, icons and web manifest come from the opengraph-image, icon, apple-icon
+// and manifest files next to this layout
 export const metadata: Metadata = {
-  title: "Taj City | Agra, timed right",
-  description:
-    "A mobile-first companion for Agra: live Taj Mahal opening status, sunrise and crowd timing, where to eat, a map of every stop and a day plan you can reorder and share.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  appleWebApp: { capable: true, title: SITE_NAME, statusBarStyle: "default" },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    locale: "en_IN",
+    url: "/",
+  },
+  twitter: { card: "summary_large_image", title: SITE_TITLE, description: SITE_DESCRIPTION },
   keywords: [
     "Agra travel guide",
     "Taj Mahal timings today",
