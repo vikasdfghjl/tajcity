@@ -176,6 +176,10 @@ export const SOURCES = {
     label: "TripXL: best food in Agra",
     url: "https://tripxl.com/blog/best-food-in-agra/",
   },
+  agraDistrictTaj: {
+    label: "Taj Mahal, Agra district (official)",
+    url: "https://agra.nic.in/tourist-place/tajmahal/",
+  },
   tajTimeLimit2019: {
     label: "Business Today: three-hour limit at the Taj (June 2019)",
     url: "https://www.businesstoday.in/current/economy-politics/pay-fine-spend-more-3-hours-taj-mahal/story/355420.html",

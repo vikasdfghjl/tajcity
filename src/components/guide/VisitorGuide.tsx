@@ -1,12 +1,12 @@
 "use client";
 
 import { FACTS_CHECKED_ON, IST_TIME_ZONE, MONTH_VERDICT_LABEL } from "@/config/constants";
-import { ArrowSquareOut, Plus } from "@phosphor-icons/react";
 import { useState } from "react";
+import { GuideAnswer } from "@/components/guide/GuideAnswer";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Segmented } from "@/components/ui/Segmented";
 import { AGRA_CLIMATE, GUIDE_TOPICS } from "@/data/guide";
-import type { GuideEntry, MonthVerdict } from "@/data/types";
+import type { MonthVerdict } from "@/data/types";
 import { useNow } from "@/lib/stores";
 import { cn } from "@/lib/cn";
 
@@ -22,47 +22,6 @@ const istMonthIndex = (date: Date) =>
   Number(
     new Intl.DateTimeFormat("en-IN", { timeZone: IST_TIME_ZONE, month: "numeric" }).format(date),
   ) - 1;
-
-function Answer({ entry, open }: { entry: GuideEntry; open: boolean }) {
-  return (
-    <details className="group border-b border-line" open={open}>
-      <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 py-4 text-[17px] leading-snug font-semibold transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
-        {entry.question}
-        <span className="grid size-8 shrink-0 place-items-center rounded-full bg-sunken text-ink transition-transform duration-300 group-open:rotate-45">
-          <Plus size={16} weight="bold" aria-hidden="true" />
-        </span>
-      </summary>
-      <div className="pb-6">
-        <p className="max-w-[62ch] text-[15px] leading-relaxed text-ink-2">{entry.answer}</p>
-        {entry.points && (
-          <ul className="mt-3 max-w-[62ch] space-y-2">
-            {entry.points.map((point) => (
-              <li key={point} className="flex gap-2.5 text-[15px] leading-relaxed text-ink-2">
-                <span className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-accent" />
-                {point}
-              </li>
-            ))}
-          </ul>
-        )}
-        <p className="mt-4 flex flex-wrap gap-x-3 gap-y-1 text-xs text-ink-3">
-          <span>Source:</span>
-          {entry.sources.map((source) => (
-            <a
-              key={source.url}
-              href={source.url}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1 underline decoration-line underline-offset-2 hover:text-ink"
-            >
-              {source.label}
-              <ArrowSquareOut size={12} aria-hidden="true" />
-            </a>
-          ))}
-        </p>
-      </div>
-    </details>
-  );
-}
 
 /** Twelve months of IMD normals. Opens on this month in Agra; tap any month for its note. */
 function ClimateStrip() {
@@ -167,7 +126,7 @@ export function VisitorGuide() {
           {/* Keyed by topic so each topic opens fresh, with its first answer expanded */}
           <div key={topic.id} className="min-w-0 border-t border-line lg:col-span-8">
             {topic.entries.map((entry, index) => (
-              <Answer key={entry.question} entry={entry} open={index === 0} />
+              <GuideAnswer key={entry.question} entry={entry} open={index === 0} />
             ))}
           </div>
         </div>
