@@ -6,14 +6,15 @@ import {
   TAJ_COORDS,
 } from "@/config/constants";
 import { CRAFT_STOPS } from "@/data/crafts";
+import { DINING_SPOTS } from "@/data/dining";
 import { FOOD_SPOTS } from "@/data/food";
 import { MONUMENTS } from "@/data/monuments";
 import type { Place } from "@/data/types";
 
-export type { Photo, Place, PlaceKind } from "@/data/types";
+export type { DiningDetails, Meal, Photo, Place, PlaceKind } from "@/data/types";
 
 /** Every place in the app, in category order. */
-export const PLACES: Place[] = [...MONUMENTS, ...FOOD_SPOTS, ...CRAFT_STOPS];
+export const PLACES: Place[] = [...MONUMENTS, ...FOOD_SPOTS, ...CRAFT_STOPS, ...DINING_SPOTS];
 
 const PLACE_BY_ID = new Map(PLACES.map((place) => [place.id, place]));
 

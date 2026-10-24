@@ -88,7 +88,7 @@ export function MapSection() {
           options={[
             { value: "all", label: "Everything" },
             { value: "monument", label: "Monuments" },
-            { value: "eat", label: "Food and craft" },
+            { value: "eat", label: "Food, dining and craft" },
           ]}
           className="mb-6"
         />

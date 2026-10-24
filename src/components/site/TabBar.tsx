@@ -1,6 +1,13 @@
 "use client";
 
-import { Compass, ListChecks, MapTrifold, SunHorizon, type Icon } from "@phosphor-icons/react";
+import {
+  BowlFood,
+  Compass,
+  ListChecks,
+  MapTrifold,
+  SunHorizon,
+  type Icon,
+} from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "motion/react";
 import { useActiveSection } from "@/components/site/nav";
 import { SECTIONS, TAB_BAR_SECTIONS, type SectionId } from "@/config/constants";
@@ -10,6 +17,7 @@ import { cn } from "@/lib/cn";
 const TAB_ICONS: Partial<Record<SectionId, Icon>> = {
   light: SunHorizon,
   explore: Compass,
+  eat: BowlFood,
   map: MapTrifold,
 };
 
