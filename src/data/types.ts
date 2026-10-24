@@ -97,6 +97,36 @@ export interface ItineraryPreset {
   stops: ItineraryStop[];
 }
 
+/** One question a first-time visitor asks, answered from the listed sources. */
+export interface GuideEntry {
+  question: string;
+  answer: string;
+  /** Follow-up specifics, shown as a list under the answer */
+  points?: string[];
+  sources: Source[];
+}
+
+export interface GuideTopic {
+  id: string;
+  label: string;
+  intro: string;
+  entries: GuideEntry[];
+}
+
+export type MonthVerdict = "best" | "good" | "fog" | "hot" | "wet";
+
+/** IMD climatological normals for one month, plus what they mean for a visit. */
+export interface ClimateMonth {
+  month: string;
+  /** Mean daily maximum, °C */
+  high: number;
+  /** Mean daily minimum, °C */
+  low: number;
+  rainMm: number;
+  verdict: MonthVerdict;
+  note: string;
+}
+
 export interface TransitRoute {
   from: string;
   /** Place id of the destination */

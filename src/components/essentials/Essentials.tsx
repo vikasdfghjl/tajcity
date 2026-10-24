@@ -43,7 +43,7 @@ export function Essentials() {
         <SectionHeading
           id="essentials"
           title="Know this before you go"
-          intro="The handful of rules and scams that catch out first-time visitors."
+          intro="The rules at the gate and the shopping traps that catch out first-time visitors. Touts, guides and getting around are in the guide below."
         />
 
         {/* Bento: 6 tiles. 4 columns by 3 rows on desktop, a single stack on phones */}

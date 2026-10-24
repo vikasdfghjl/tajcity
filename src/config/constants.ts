@@ -80,6 +80,7 @@ export const SECTIONS = [
   { id: "map", label: "Map" },
   { id: "plans", label: "Day plans" },
   { id: "essentials", label: "Essentials" },
+  { id: "guide", label: "Guide" },
 ] as const;
 
 export type SectionId = (typeof SECTIONS)[number]["id"];
@@ -133,6 +134,16 @@ export const MEAL_TABS = [
 
 /** Meal shown before the visitor's clock is known. */
 export const DEFAULT_MEAL = "lunch";
+
+/* ---------- Visitor guide ---------- */
+
+export const MONTH_VERDICT_LABEL = {
+  best: "Best",
+  good: "Good",
+  fog: "Foggy mornings",
+  hot: "Hot",
+  wet: "Monsoon",
+} as const;
 
 export const PRICE_LEVEL_LABEL = {
   1: "Budget",
